@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div v-if="business_info.show_hero_section > 0">
-			<header class="px-4 pt-6 flex items-center justify-between">
-				<div class="flex items-center gap-3">
-					<div class="w-12 h-12 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
-						 <img :src="business_info.photo" class="rounded-lg" />
+			<header class="px-4 pt-6   flex items-center justify-between">
+				<div class="flex items-center gap-3" >
+					<div class="w-20 h-20 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
+						 <img :src="business_info.photo" class="rounded-lg"  />
 					</div>
 					<div>
 						<h1 class="font-bold text-xl tracking-tight" style="margin: 0;">{{business_info.business_name}}</h1>
@@ -16,13 +16,13 @@
 				</button> 
 			</header>
 			<section class="px-4 py-4">
-			<div class="relative rounded-3xl overflow-hidden min-h-[600px] bg-neutral-900 shadow-xl flex flex-col">
+			<div class="relative rounded-3xl overflow-hidden min-h-[280px] bg-neutral-900 shadow-xl flex flex-col">
 				<img
 					v-if="business_info.hero_photo"
 					:src="business_info.hero_photo"
 					alt="Hero"
 					class="absolute inset-0 w-full h-full object-cover opacity-50"
-					style="height: 100px;"
+					 
 				/>
 				<img
 					v-else

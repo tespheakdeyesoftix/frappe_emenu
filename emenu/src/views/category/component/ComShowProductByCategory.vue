@@ -26,7 +26,7 @@
 									<div class="relative aspect-square overflow-hidden">
 										<img :src="product.photo_1" :alt="product.title" class="w-full h-full object-cover" />
 										<button @click.stop="toggleFavorite(product)" :class="['absolute top-3 right-3 p-2 rounded-full glass transition-colors', product.isFavorite ? 'text-red-500':'text-neutral-600']">
-											<Heart size="18" :fill="isFavorite(product.name) ? 'red' : 'none'" />
+											<Heart size="18" :fill="product.isFavorite ? 'red' : 'none'" />
 										</button>
 									</div>
 									<div class="p-4">

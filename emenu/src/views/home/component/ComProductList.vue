@@ -29,6 +29,7 @@
       >
 
         <ComProductCard :product="product" :view="viewMode"/>
+
       </div>
     </div>
 

@@ -29,9 +29,9 @@
         </div>
       </div>
 	  <ion-infinite-scroll
-        @ionInfinite="LoanPaymentStore.loadMore"
+        @ionInfinite="loadMore"
         threshold="100px"
-        :disabled="!LoanPaymentStore.hasMore"
+        :disabled="!hasMore"
       >
         <ion-infinite-scroll-content
           loading-spinner="crescent"
@@ -48,15 +48,24 @@ import { IonContent, IonPage, IonIcon,IonInfiniteScroll, IonInfiniteScrollConten
 import { arrowForward } from 'ionicons/icons'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
+const page = ref(1)
+const pageSize = 10
+const hasMore = ref(true)
 const categories = ref([])
-
-async function getCategories() {
+async function getCategories(pageNumber = 1) {
   const res = await app.getDocList('Product Category', {
-    fields: ['name', 'category_name', 'photo']
+    fields: ['name', 'category_name', 'photo'],
+    limit: pageSize,
+    limit_start: (pageNumber - 1) * pageSize
   })
-  if (res.data) {
-    categories.value = res.data
+
+  const items = res.data || res.docs || []
+
+  if (items.length) {
+    categories.value = pageNumber === 1 ? items : [...categories.value, ...items]
+    hasMore.value = items.length === pageSize
+  } else {
+    hasMore.value = false
   }
 }
 
@@ -66,6 +75,16 @@ function goToCategory(category) {
   })
 }
 
+async function loadMore(event) {
+  if (!hasMore.value) {
+    event.target.complete()
+    return
+  }
+
+  page.value++
+  const res = await getCategories(page.value)
+  event.target.complete()
+}
 onMounted(() => {
   getCategories()
 })
