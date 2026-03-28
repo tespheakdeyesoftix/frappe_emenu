@@ -28,15 +28,24 @@
           </div>
         </div>
       </div>
+	  <ion-infinite-scroll
+        @ionInfinite="LoanPaymentStore.loadMore"
+        threshold="100px"
+        :disabled="!LoanPaymentStore.hasMore"
+      >
+        <ion-infinite-scroll-content
+          loading-spinner="crescent"
+          loading-text="Loading..."
+        />
+      </ion-infinite-scroll>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { IonContent, IonPage, IonIcon } from '@ionic/vue'
+import { IonContent, IonPage, IonIcon,IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/vue'
 import { arrowForward } from 'ionicons/icons'
-
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
