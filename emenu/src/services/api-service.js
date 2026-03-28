@@ -4,45 +4,50 @@ import { showSuccessMessage, handleErrorMessage } from "@/helpers/error-message.
 const frappe = new FrappeApp()
 const db = frappe.db();
 const call = frappe.call();
-export function setValue(DocType, name, fields, value = null) {
+export async function setValue(DocType, name, fields, value = null) {
 
 
     if (typeof fields === "string") {
-        return db.setValue(DocType, name, fields, value)
-            .then(doc => ({ data: doc.message, error: null }))
-            .catch(async err => {
-                handleErrorMessage(err);
-                return { data: null, err };
-            });
+        try {
+            const doc = await db.setValue(DocType, name, fields, value);
+            return ({ data: doc.message, error: null });
+        } catch (err) {
+            handleErrorMessage(err);
+            return await { data: null, err };
+        }
 
     } else {
-        return db.setValue(DocType, name, fields)
-            .then(doc => ({ data: doc.message, error: null }))
-            .catch(async err => {
-                handleErrorMessage(err);
-                return { data: null, err };
-            });
+        try {
+            const doc_1 = await db.setValue(DocType, name, fields);
+            return ({ data: doc_1.message, error: null });
+        } catch (err_1) {
+            handleErrorMessage(err_1);
+            return await { data: null, err };
+        }
     }
 }
 
 
-export function logoutApi() {
+export async function logoutApi() {
 
     const auth = frappe.auth();
-    return auth
-        .logout()
-        .then(() => true)
-        .catch(() => false);
+    try {
+        await auth
+            .logout();
+        return true;
+    } catch {
+        return false;
+    }
 }
 
-export function getDocList(DocType, param = null) {
+export async function getDocList(DocType, param = null) {
 
-    return db.getDocList(DocType, param)
-        .then(r => ({ data: r, error: null }))
-        .catch(error => {
-            // handleErrorMessage(error);
-            return { data: null, error };
-        });
+    try {
+        const r = await db.getDocList(DocType, param);
+        return ({ data: r, error: null });
+    } catch (error) {
+        return { data: null, error };
+    }
 }
 
 export async function getCount(DocType, param = null) {
@@ -55,7 +60,7 @@ export async function getCount(DocType, param = null) {
 
 }
 
-export function getApi(api_url, param = null) {
+export async function getApi(api_url, param = null) {
     return call.get(api_url, param)
         .then(r => {
             if (r.message) {
@@ -70,24 +75,19 @@ export function getApi(api_url, param = null) {
         });
 }
 
-export function postApi(api_url, param = null) {
+export async function postApi(api_url, param = null) {
 
-    return call.post(api_url, param)
-        .then(r => {
-            // if (r._server_messages) {
-            //     showSuccessMessage(r._server_messages);
-            // }
-
-            return { data: r.message, error: null };
-        })
-        .catch(error => {
-            // handleErrorMessage(error);
-            alert("error")
-            return { data: null, error };
-        });
+    try {
+        const r = await call.post(api_url, param);
+        return { data: r.message, error: null };
+    } catch (error) {
+        // handleErrorMessage(error);
+        alert("error");
+        return { data: null, error };
+    }
 }
 
-export function getDoc(DocType, DocName) {
+export async function getDoc(DocType, DocName) {
 
     return db.getDoc(DocType, DocName)
         .then(doc => ({ data: doc, error: null }))
@@ -109,7 +109,7 @@ export function getSingleValue(DocType, DocName) {
         });
 }
 
-export function getValue(DocType, name, fields) {
+export async function getValue(DocType, name, fields) {
 
 
     return db.getValue(DocType, fields, [["name", "=", name]])
@@ -120,7 +120,7 @@ export function getValue(DocType, name, fields) {
         });
 }
 
-export function createDoc(DocType, params) {
+export async function createDoc(DocType, params) {
 
 
     return db.createDoc(DocType, params)
@@ -131,7 +131,7 @@ export function createDoc(DocType, params) {
         });
 }
 
-export function updateDoc(DocType, name, params) {
+export async function updateDoc(DocType, name, params) {
     return db.updateDoc(DocType, name, params)
         .then(doc => ({ data: doc, error: null }))
         .catch(error => {
@@ -140,7 +140,7 @@ export function updateDoc(DocType, name, params) {
         });
 }
 
-export function deleteDoc(DocType, DocName) {
+export async function deleteDoc(DocType, DocName) {
 
 
     return db.deleteDoc(DocType, DocName)
@@ -173,7 +173,7 @@ export async function uploadFile(
         fieldname: fieldname
     };
 
-    const loading = await app.showLoading("Uploading...");
+ 
 
     return file.uploadFile(
         fileData,
@@ -189,12 +189,11 @@ export async function uploadFile(
         "csl_app.api.upload.upload_file"
     )
         .then(async result => {
-            await loading.dismiss();
-
+           
             return { data: result.data.message.file_url, error: null };
         })
         .catch(async e => {
-            await loading.dismiss();
+          
             handleErrorMessage(e);
             return { data: null, e };
         });

@@ -1,0 +1,93 @@
+<template>
+	<div>
+		<div v-if="business_info.show_hero_section > 0">
+			<header class="px-4 pt-2 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div class="w-12 h-12 bg-accent rounded-2xl flex items-center justify-center text-white shadow-lg shadow-accent/20">
+					<ShoppingBag size="24" />
+					</div>
+					<div>
+					<h1 class="font-bold text-xl tracking-tight">{{business_info.business_name}}</h1>
+					<p class="text-xs text-neutral-400 font-medium">Premium Vehicles & Tech</p>
+					</div>
+				</div>
+				<!-- <button class="p-3 glass rounded-2xl text-neutral-600">
+					<Search size="20" />
+				</button> -->
+			</header>
+			<section class="px-4 py-4">
+			<div class="relative rounded-3xl overflow-hidden min-h-[280px] bg-neutral-900 shadow-xl flex flex-col">
+				<img
+					v-if="business_info.hero_photo"
+					:src="business_info.hero_photo"
+					alt="Hero"
+					class="absolute inset-0 w-full h-full object-cover opacity-50"
+				/>
+				<img
+					v-else
+					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw2dAVNmBhqVvNPAs7LJHnumSH3pHdoWP0bg&s"
+					alt="Hero"
+					class="absolute inset-0 w-full h-full object-cover opacity-50"
+				/>
+				<div class="relative z-10 p-6 flex-1 flex flex-col justify-center">
+				<h2 class="text-white text-3xl font-bold mb-2 leading-tight">
+					{{ business_info.hero_title }}
+				</h2>
+				<p class="text-white/70 text-sm mb-6 max-w-[240px]">
+					{{ business_info.hero_intro }}
+				</p>
+				<div class="flex gap-3">
+					<router-link to="/category">
+						<button  class="bg-accent text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-accent/30 active:scale-95 transition-transform" style="padding: 5px; border-radius: 5px;">
+							Explore Now
+						</button>
+					</router-link>
+					<a v-if="business_info.telegram" :href="business_info.telegram" target="_blank">
+						<button
+							class="glass-dark text-white px-4 py-3 rounded-2xl font-bold text-sm active:scale-95 transition-transform flex items-center gap-2" style="padding: 5px; border-radius: 5px;"
+						>
+							<Send size="16" /> Contact
+						</button>
+					</a>
+				</div>
+				</div>
+
+				<div class="relative z-10 glass-dark border-t border-white/10 px-6 py-4 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div class="p-2 bg-white/10 rounded-lg text-white/80"><MapPin size="14" /></div>
+					<div class="text-[10px] text-white/60">
+					<p class="font-bold text-white/90">Main Showroom</p>
+					<p>{{ business_info.address }}</p>
+					</div>
+				</div>
+				<div class="flex items-center gap-3">
+					<div class="p-2 bg-white/10 rounded-lg text-white/80"><Clock size="14" /></div>
+					<div class="text-[10px] text-white/60 text-right">
+					<p class="font-bold text-white/90">Open Today</p>
+					<p>{{ business_info.business_hour }}</p>
+					</div>
+				</div>
+				</div>
+			</div>
+			</section>
+		</div>
+	</div>
+</template>
+
+<script setup>
+import { Heart, Grid, List, Plus, ShoppingBag, Send, Search, MapPin, Clock } from 'lucide-vue-next'
+
+import { useApp } from "@/hooks/useApp.js"
+
+const {business_info} =useApp()
+</script>
+
+<style scoped>
+.main-background {
+  background: linear-gradient(135deg, #f0f4ff, #d9e2ff);
+  min-height: 100vh;
+}
+.bg-accent { background-color: #4f46e5; }
+.glass { background-color: rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
+.glass-dark { background-color: rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
+</style>

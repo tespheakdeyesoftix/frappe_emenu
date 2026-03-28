@@ -8,14 +8,14 @@
       </div>
 
       <!-- Top right actions -->
-      <!-- <div class="hero-actions">
-        <div class="hero-action-btn">
+      <div class="hero-actions">
+        <!-- <div class="hero-action-btn">
           <ion-icon :icon="shareOutline" />
-        </div>
+        </div> -->
         <div class="hero-action-btn">
           <ion-icon :icon="heartOutline" />
         </div>
-      </div> -->
+      </div>
     </div>
 
     <div class="detail-card">
@@ -37,20 +37,20 @@
         <p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail.description"></p>
       </div>
 
-      <button class="order-btn mt-6">
-        Order Now
-      </button>
-
-      <div class="flex gap-3 mt-3">
-        <button class="contact-btn telegram">
-          <ion-icon :icon="paperPlaneOutline" />
-          Contact Telegram
+     <div class="flex gap-3 mt-8 w-full">
+    <a v-if="business_info.telegram" :href="business_info.telegram" target="_blank" class="flex-1">
+        <button class="contact-btn telegram w-full">
+            <ion-icon :icon="paperPlaneOutline" />
+            Contact Telegram
         </button>
-        <button class="contact-btn facebook">
-          <ion-icon :icon="logoFacebook" />
-          Facebook
+    </a>
+    <a v-if="business_info.facebook" :href="business_info.facebook" target="_blank" class="flex-1">
+        <button class="contact-btn facebook w-full">
+            <ion-icon :icon="logoFacebook" />
+            Facebook
         </button>
-      </div>
+    </a>
+</div>
     </div>
   </ion-content>
 </ion-page>
@@ -73,9 +73,13 @@ const route = useRoute();
 const router = useRouter();
 const productDetail = ref({});
 
+import { useApp } from "@/hooks/useApp.js"
+const {business_info} =useApp()
+
+
 async function getProductDetail() {
   const res = await app.getDocList("Products", {
-    fields: ["name", "product_name", "price", "category_name", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
+    fields: ["name", "product_name", "price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
     filters: [["name", "=", route.params.name]]
   });
   if (res.data) {

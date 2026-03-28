@@ -1,5 +1,3 @@
- 
-
 <template>
   <div>
     <!-- Header with Grid/List toggle -->
@@ -38,22 +36,22 @@
             <div class="flex items-center justify-between">
               <span class="font-bold text-accent">{{ formatPrice(product.price) }}</span>
               <button @click.stop="toggleFavorite(product)" :class="['p-2 rounded-full transition-colors', product.isFavorite ? 'text-red-500 bg-red-50' : 'text-neutral-300 bg-neutral-50']">
-                <Heart size="18" :fill="isFavorite(product.name) ? 'pink' : 'none'" />
+                <Heart size="18" :fill="isFavorite(product.name) ? 'red' : 'none'" />
               </button>
             </div>
           </div>
         </div>
 
         <!-- Grid View -->
-        <div v-else class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden flex flex-col">
+        <div v-else class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden flex flex-col h-full">
           <div class="relative aspect-square overflow-hidden">
             <img :src="product.photo_1" :alt="product.product_name" class="w-full h-full object-cover"/>
             <button @click.stop="toggleFavorite(product)" :class="['absolute top-3 right-3 p-2 rounded-full glass transition-colors', product.isFavorite ? 'text-red-500' : 'text-neutral-600']">
-              <Heart size="18" :fill="isFavorite(product.name) ? 'pink' : 'none'" />
+              <Heart size="18" :fill="isFavorite(product.name) ? 'red' : 'none'" />
             </button>
           </div>
           <div class="p-3 flex flex-col flex-1">
-            <h5 class="font-bold text-neutral-800 text-sm m-0">{{ product.product_name }}</h5>
+            <h5 class="font-bold text-neutral-800 text-sm m-0" style="margin:0;">{{ product.product_name }}</h5>
             <p class="text-[10px] text-neutral-400 my-1 uppercase tracking-tight" v-if="product.category_name">{{ product.category_name }}</p>
             <div class="flex items-center justify-between mt-auto">
               <span class="font-bold text-accent">{{ formatPrice(product.price) }}</span>
@@ -97,7 +95,7 @@ function formatPrice(price) {
 function toggleFavorite(product) {
  addToFavorite(product.name)
 
-  
+
 }
 
 function handleProductClick(product) {

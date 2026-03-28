@@ -39,7 +39,7 @@ export function useApp(){
 
             favorites.value = JSON.parse(_favorites)
         }
-        console.log(favorites.value)
+        // console.log(favorites.value)
     })
     return {
         business_info,
