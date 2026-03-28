@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-if="business_info.show_hero_section > 0">
+		<div >
 			<header class="px-4 pt-6   flex items-center justify-between">
 				<div class="flex items-center gap-3" >
 					<div class="w-20 h-20 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
@@ -15,7 +15,7 @@
 					<Search size="20" />
 				</button> 
 			</header>
-			<section class="px-4 py-4">
+			<section class="px-4 py-4" v-if="business_info.show_hero_section > 0">
 			<div class="relative rounded-3xl overflow-hidden min-h-[280px] bg-neutral-900 shadow-xl flex flex-col">
 				<img
 					v-if="business_info.hero_photo"

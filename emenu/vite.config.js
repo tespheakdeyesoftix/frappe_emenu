@@ -34,7 +34,6 @@ export default defineConfig({
 		emptyOutDir: true,
 		target: 'esnext',
 		sourcemap: true,
-		minify: false,
 		commonjsOptions: {
 			include: [/node_modules/],
 			transformMixedEsModules: true,  // This is the key fix
