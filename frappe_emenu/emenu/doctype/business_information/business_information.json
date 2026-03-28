@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:sub_domain_name",
+ "creation": "2026-03-28 10:43:15.321403",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "sub_domain_name",
+  "business_name",
+  "photo",
+  "contact_name",
+  "phone_number",
+  "facebook",
+  "telegram",
+  "address",
+  "column_break_msan",
+  "business_hour",
+  "show_hero_section",
+  "hero_photo",
+  "hero_title",
+  "hero_intro"
+ ],
+ "fields": [
+  {
+   "fieldname": "business_name",
+   "fieldtype": "Data",
+   "label": "Business Name"
+  },
+  {
+   "fieldname": "photo",
+   "fieldtype": "Attach Image",
+   "hidden": 1,
+   "label": "Photo"
+  },
+  {
+   "fieldname": "contact_name",
+   "fieldtype": "Data",
+   "label": "Contact Name"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "facebook",
+   "fieldtype": "Data",
+   "label": "Facebook"
+  },
+  {
+   "fieldname": "telegram",
+   "fieldtype": "Data",
+   "label": "Telegram"
+  },
+  {
+   "fieldname": "sub_domain_name",
+   "fieldtype": "Data",
+   "label": "Sub Domain Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "column_break_msan",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "business_hour",
+   "fieldtype": "Data",
+   "label": "Business Hour"
+  },
+  {
+   "default": "0",
+   "fieldname": "show_hero_section",
+   "fieldtype": "Check",
+   "label": "Show Hero Section"
+  },
+  {
+   "fieldname": "hero_photo",
+   "fieldtype": "Attach Image",
+   "label": "Hero Photo"
+  },
+  {
+   "fieldname": "hero_title",
+   "fieldtype": "Data",
+   "label": "Hero Title"
+  },
+  {
+   "fieldname": "hero_intro",
+   "fieldtype": "Small Text",
+   "label": "Hero Intro"
+  }
+ ],
+ "grid_page_length": 50,
+ "image_field": "photo",
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-03-28 11:42:33.792331",
+ "modified_by": "Administrator",
+ "module": "eMenu",
+ "name": "Business Information",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "business_name"
+}

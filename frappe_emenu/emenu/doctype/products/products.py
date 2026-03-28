@@ -14,8 +14,11 @@ class Products(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		business_name: DF.Link | None
 		category: DF.Link | None
+		category_name: DF.Data | None
 		description: DF.TextEditor | None
+		is_feature: DF.Check
 		photo: DF.AttachImage | None
 		photo_1: DF.AttachImage | None
 		photo_2: DF.AttachImage | None
