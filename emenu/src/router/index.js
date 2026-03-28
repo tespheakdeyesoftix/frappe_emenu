@@ -4,7 +4,7 @@ import routes from '@/router/routes.js'
 
  
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  history: createWebHistory("/emenu"),
   routes,
 });
 

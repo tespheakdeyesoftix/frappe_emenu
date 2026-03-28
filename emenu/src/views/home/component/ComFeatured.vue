@@ -18,11 +18,11 @@
           spaceBetween: 12,
         },
         640: {
-          slidesPerView: 1.2,
+          slidesPerView: 1,
           spaceBetween: 16,
         },
         1024: {
-          slidesPerView: 1.5,
+          slidesPerView:1,
           spaceBetween: 24,
         },
       }"

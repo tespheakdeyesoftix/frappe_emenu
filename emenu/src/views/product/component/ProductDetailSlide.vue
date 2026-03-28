@@ -12,8 +12,8 @@
   :modules="modules"
   :breakpoints="{
     0: { slidesPerView: 1, spaceBetween: 12 },
-    640: { slidesPerView: 1.2, spaceBetween: 16 },
-    1024: { slidesPerView: 1.5, spaceBetween: 24 },
+    640: { slidesPerView: 1, spaceBetween: 16 },
+    1024: { slidesPerView: 1, spaceBetween: 24 },
   }"
   class="mySwiper"
 >
@@ -41,6 +41,7 @@ export default {
   setup(props) {
 	const images = computed(() => {
       return [
+        props.productDetail?.photo,
         props.productDetail?.photo_1,
         props.productDetail?.photo_2,
         props.productDetail?.photo_3,

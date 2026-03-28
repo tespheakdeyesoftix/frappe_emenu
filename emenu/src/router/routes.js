@@ -34,14 +34,18 @@ const routes = [
         path: 'category-product/:name',
         component: ComShowProductByCategory,
       },
+      {
+        path: '/product-detail/:name',
+        component: ProductDetail,
+      },
 
 
     ]
   },
-  {
-        path: '/product-detail/:name',
-        component: ProductDetail,
-      },
+  // {
+  //       path: '/product-detail/:name',
+  //       component: ProductDetail,
+  //     },
 
   // {
   //   path: '/edit-loan-detail/:name',
