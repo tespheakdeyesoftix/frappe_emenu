@@ -1,0 +1,52 @@
+{
+ "app": "frappe_emenu",
+ "charts": [],
+ "content": "[{\"id\":\"xGWuBTJK8n\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Product\",\"col\":4}},{\"id\":\"2C3rvDqzsX\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"GGGO3UgRuq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product\",\"col\":3}},{\"id\":\"VMYqy3ikog\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Ve_Bhe_EaV\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Recent Product\",\"col\":6}}]",
+ "creation": "2026-04-01 09:26:13.648943",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "home",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "eMenu Home",
+ "link_type": "DocType",
+ "links": [],
+ "modified": "2026-04-01 09:56:41.855141",
+ "modified_by": "Administrator",
+ "module": "eMenu",
+ "name": "eMenu Home",
+ "number_cards": [
+  {
+   "label": "Total Product",
+   "number_card_name": "Total Product"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [
+  {
+   "document_type": "Products",
+   "label": "Recent Product",
+   "quick_list_filter": "[]"
+  }
+ ],
+ "roles": [],
+ "sequence_id": 23.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Product",
+   "link_to": "Products",
+   "stats_filter": "[[\"Products\",\"published\",\"=\",1]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "eMenu Home",
+ "type": "Workspace"
+}

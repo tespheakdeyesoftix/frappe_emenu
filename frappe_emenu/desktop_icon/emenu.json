@@ -1,0 +1,22 @@
+{
+ "app": "frappe_emenu",
+ "bg_color": "blue",
+ "creation": "2026-04-01 09:38:15.252026",
+ "docstatus": 0,
+ "doctype": "Desktop Icon",
+ "hidden": 0,
+ "icon_type": "Link",
+ "idx": 0,
+ "label": "eMenu",
+ "link_to": "eMenu",
+ "link_type": "Workspace Sidebar",
+ "logo_url": "https://play-lh.googleusercontent.com/ts9vxQJ2ztAhO2rCNlPcyFryDxX3SlZQ_8FTt3H1xG9g1jMTVjG_pNPhh3M2QUIU0Q=s48-rw",
+ "modified": "2026-04-01 09:46:30.993533",
+ "modified_by": "Administrator",
+ "name": "eMenu",
+ "owner": "Administrator",
+ "restrict_removal": 0,
+ "roles": [],
+ "sidebar": "eMenu",
+ "standard": 1
+}
