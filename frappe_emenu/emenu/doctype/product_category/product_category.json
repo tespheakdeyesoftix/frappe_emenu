@@ -5,6 +5,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "business_name",
   "category_name",
   "photo",
   "description",
@@ -44,13 +45,19 @@
    "fieldname": "published",
    "fieldtype": "Check",
    "label": "Published"
+  },
+  {
+   "fieldname": "business_name",
+   "fieldtype": "Link",
+   "label": "Business Name",
+   "options": "Business Information"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-30 15:17:57.420611",
+ "modified": "2026-04-01 11:18:54.094646",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Product Category",

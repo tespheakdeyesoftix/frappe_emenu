@@ -4,7 +4,7 @@ import routes from '@/router/routes.js'
 
  
 const router = createRouter({
-  history: createWebHistory("/emenu"),
+  history: createWebHistory("/emenu/"),
   routes,
 });
 

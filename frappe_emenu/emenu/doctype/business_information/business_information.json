@@ -24,7 +24,8 @@
   "show_hero_section",
   "hero_photo",
   "hero_title",
-  "hero_intro"
+  "hero_intro",
+  "placeholder_image"
  ],
  "fields": [
   {
@@ -123,13 +124,18 @@
    "fieldname": "slogan_2",
    "fieldtype": "Data",
    "label": "Slogan 2"
+  },
+  {
+   "fieldname": "placeholder_image",
+   "fieldtype": "Attach Image",
+   "label": "Placeholder Image"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-31 10:12:09.059853",
+ "modified": "2026-04-01 11:29:47.712563",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Business Information",

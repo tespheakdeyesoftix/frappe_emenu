@@ -1,17 +1,19 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
+		<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
+			<ion-refresher-content />
+		</ion-refresher>
     <div class="relative" style="height: 360px;">
       <ProductDetailSlide :productDetail="productDetail" />
       <div class="hero-back" @click="router.back()">
         <ion-icon :icon="chevronBackOutline" />
       </div>
-
       <!-- Top right actions -->
       <div class="hero-actions">
         <div class="hero-action-btn">
-			<button @click.stop="toggleFavorite(productDetail)" :class="[' top-3 right-3 p-2 rounded-full glass transition-colors', productDetail.isFavorite ? 'text-red-500' : 'text-neutral-600']">
-				<Heart size="18" :fill="isFavorite(productDetail.name) ? 'red' : 'none'" />
+			<button @click.stop="toggleFavorite(productDetail)" :class="[' top-3 right-3 p-2 rounded-full glass transition-colors', productDetail?.isFavorite ? 'text-red-500' : 'text-neutral-600']">
+				<Heart size="18" :fill="isFavorite(productDetail?.name) ? 'red' : 'none'" />
 			</button>
         </div>
       </div>
@@ -20,49 +22,49 @@
     <div class="detail-card">
       <div class="flex justify-between items-center gap-3">
         <h2 class="text-xl font-bold text-gray-900 leading-snug flex-1">
-          {{ productDetail.product_name }}
+          {{ productDetail?.product_name }}
         </h2>
         <span class="category-badge">
-          {{ productDetail.category_name }}
+          {{ productDetail?.category_name }}
         </span>
       </div>
 
 	  <div class="flex justify-between ">
-			<div v-if="productDetail.price">
+			<div v-if="productDetail?.price">
 				<p>{{ t("Price") }}</p>
 				<div class="text-2xl font-bold text-orange-500">
-					{{ formatPrice(productDetail.price) }}
+					{{ formatPrice(productDetail?.price) }}
 				</div>
 			</div>
-			<div v-if="productDetail.installment_price">
+			<div v-if="productDetail?.installment_price">
 				<p>{{ t("Installment Price") }}</p>
 				<div class="text-2xl font-bold text-orange-500">
-					{{ formatPrice(productDetail.installment_price) }}
+					{{ formatPrice(productDetail?.installment_price) }}
 				</div>
 			</div>
 	  </div>
 
-		<div class="flex gap-2 flex-wrap py-3" v-if="productDetail._user_tags">
+		<div class="flex gap-2 flex-wrap py-3" v-if="productDetail?._user_tags">
 			<ion-chip
-				v-for="tag in (productDetail._user_tags || '').split(',')"
+				v-for="tag in (productDetail?._user_tags || '').split(',')"
 				:key="tag"
 			>
 			<ion-label class="p-2">{{ tag }}</ion-label>
 			</ion-chip>
 		</div>
-      <div v-if="productDetail.description">
+      <div v-if="productDetail?.description">
         <h4 class="text-base font-semibold text-gray-900 pt-2" style="margin: 0;">{{ t("Description") }}</h4>
-        <p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail.description"></p>
+        <p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail?.description"></p>
       </div>
 
      <div class="flex gap-3 mt-8 w-full">
-    <a v-if="business_info.telegram" :href="business_info.telegram" target="_blank" class="flex-1">
+    <a v-if="business_info.telegram" :href="business_info?.telegram" target="_blank" class="flex-1">
         <button class="contact-btn telegram w-full">
             <ion-icon :icon="paperPlaneOutline" />
             {{ t("Contact Telegram") }}
         </button>
     </a>
-    <a v-if="business_info.facebook" :href="business_info.facebook" target="_blank" class="flex-1">
+    <a v-if="business_info.facebook" :href="business_info?.facebook" target="_blank" class="flex-1">
         <button class="contact-btn facebook w-full">
             <ion-icon :icon="logoFacebook" />
             Facebook
@@ -75,7 +77,7 @@
 </template>
 
 <script setup>
-import { IonContent, IonPage, IonIcon } from '@ionic/vue';
+import { IonContent, IonPage, IonIcon,IonRefresher, IonRefresherContent } from '@ionic/vue';
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import {
@@ -95,14 +97,18 @@ const {business_info,isFavorite,addToFavorite} =useApp()
 
 async function getProductDetail() {
   const res = await app.getDocList("Products", {
-    fields: ["name", "product_name", "price","installment_price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
-    filters: [["name", "=", route.params.name]]
+    fields: ["name", "product_name",'published',"price","installment_price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
+    filters: [["name", "=", route.params.name],["published", "=", 1]],
   });
   if (res.data) {
     productDetail.value = res.data[0];
   }
 }
 
+async function handleRefresh(event) {
+  await getProductDetail(true);
+  event.target.complete();
+}
 function formatPrice(price) {
   if (!price) return "$0"
   return `$${price.toLocaleString()}`

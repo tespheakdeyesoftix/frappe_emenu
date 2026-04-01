@@ -1,7 +1,7 @@
 {
  "app": "frappe_emenu",
  "charts": [],
- "content": "[{\"id\":\"xGWuBTJK8n\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Product\",\"col\":4}},{\"id\":\"2C3rvDqzsX\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"GGGO3UgRuq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product\",\"col\":3}},{\"id\":\"VMYqy3ikog\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Ve_Bhe_EaV\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Recent Product\",\"col\":6}}]",
+ "content": "[{\"id\":\"xGWuBTJK8n\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Product\",\"col\":3}},{\"id\":\"ECV-BE6aoX\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Feature Product\",\"col\":3}},{\"id\":\"dniFmvvyIK\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Publish Product\",\"col\":3}},{\"id\":\"WqsAUHQRNF\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Unpublish Product\",\"col\":3}},{\"id\":\"2C3rvDqzsX\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"GGGO3UgRuq\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product\",\"col\":3}},{\"id\":\"JOyObSk6bN\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Product\",\"col\":3}},{\"id\":\"HBNmPlRbyj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Product Category\",\"col\":3}},{\"id\":\"wUAqpFzjTg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"New Product Category\",\"col\":3}},{\"id\":\"VMYqy3ikog\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Ve_Bhe_EaV\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Recent Product\",\"col\":6}},{\"id\":\"X08ebDr84_\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Unpublish Product\",\"col\":6}}]",
  "creation": "2026-04-01 09:26:13.648943",
  "custom_blocks": [],
  "docstatus": 0,
@@ -15,7 +15,7 @@
  "label": "eMenu Home",
  "link_type": "DocType",
  "links": [],
- "modified": "2026-04-01 09:56:41.855141",
+ "modified": "2026-04-01 10:43:46.496911",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "eMenu Home",
@@ -23,12 +23,29 @@
   {
    "label": "Total Product",
    "number_card_name": "Total Product"
+  },
+  {
+   "label": "Total Feature Product",
+   "number_card_name": "Total Feature Product"
+  },
+  {
+   "label": "Total Publish Product",
+   "number_card_name": "Total Publish Product"
+  },
+  {
+   "label": "Total Unpublish Product",
+   "number_card_name": "Total Unpublish Product"
   }
  ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
  "quick_lists": [
+  {
+   "document_type": "Products",
+   "label": "Unpublish Product",
+   "quick_list_filter": "[[\"Products\",\"published\",\"=\",0]]"
+  },
   {
    "document_type": "Products",
    "label": "Recent Product",
@@ -39,11 +56,35 @@
  "sequence_id": 23.0,
  "shortcuts": [
   {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Product Category",
+   "link_to": "Product Category",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
    "color": "Green",
    "doc_view": "List",
    "label": "Product",
    "link_to": "Products",
-   "stats_filter": "[[\"Products\",\"published\",\"=\",1]]",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "New Product",
+   "link_to": "Products",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "New Product Category",
+   "link_to": "Product Category",
+   "stats_filter": "[]",
    "type": "DocType"
   }
  ],

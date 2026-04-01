@@ -8,7 +8,7 @@
 				<div class="hero">
 					<img
 						class="hero-img"
-						:src="category?.photo"
+						:src="category?.photo  || business_info.placeholder_image"
 						:alt="category?.category_name"
 					/>
 					<div class="hero-gradient"></div>
@@ -25,7 +25,7 @@
 					<div class="flex justify-end">
 						<div class="inline-flex bg-neutral-100 p-1 rounded-xl justify-end my-4 gap-1">
 							<div
-							@click="viewMode = 'grid'"
+							@click="setViewMode('grid')"
 							:class="['p-1 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
 							>
 							<span class="block p-1">
@@ -33,7 +33,7 @@
 							</span>
 							</div>
 							<div
-							@click="viewMode = 'list'"
+							@click="setViewMode('list')"
 							:class="['p-1 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
 							>
 							<span class="block p-1">
@@ -86,6 +86,11 @@ import { chevronBackOutline } from 'ionicons/icons';
 import { useRoute, useRouter } from 'vue-router';
 import { Heart, Plus,Grid,Menu,Table, List,PackageX, SearchX, XCircle, LayoutGrid } from 'lucide-vue-next'
 import ComProductCard from "@/components/ComProductCard.vue"
+import { useViewMode } from "@/hooks/useViewMode.js"
+const { viewMode, setViewMode } = useViewMode()
+
+import { useApp } from '@/hooks/useApp.js'
+const { business_info} = useApp()
 
 const route = useRoute();
 const router = useRouter();
@@ -93,7 +98,7 @@ const categoryName = route.params.name;
 const categories = ref([]);
 const product = ref([]);
 const category = computed(() => categories.value[0]);
-const viewMode = ref("grid")
+// const viewMode = ref("grid")
 
 const page = ref(1)
 const pageSize = 10
@@ -236,8 +241,7 @@ onMounted(() => {
 .hero-title {
   font-size: 32px;
   font-weight: 700;
-   color: #111111;
-  color: white;
+  color: rgba(1, 1, 1, 0.70);
   line-height: 1.1;
 }
 

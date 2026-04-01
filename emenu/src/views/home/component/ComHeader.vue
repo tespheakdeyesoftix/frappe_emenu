@@ -12,8 +12,8 @@
 					</div>
 				</div>
 				<div class="flex gap-3">
-					<button class="p-3 glass rounded-2xl text-neutral-600">
-						<Search size="20" />
+					<button class="p-3 glass rounded-2xl text-neutral-600" @click="showSearch = true">
+						<Search size="20" @click="showSearch = true" />
 					</button>
 					<Translate />
 				</div>
@@ -77,15 +77,18 @@
 			</div>
 			</section>
 		</div>
+		<SearchModal :is-open="showSearch" @close="showSearch = false" />
 	</div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { Heart, Grid, List, Plus, ShoppingBag, Send, Search, MapPin, Clock } from 'lucide-vue-next'
 import { useApp } from "@/hooks/useApp.js"
 
 import Translate from "@/layout/Translate.vue"
-
+import SearchModal from "@/layout/SearchModal.vue"
+const showSearch = ref(false)   
 const {business_info} =useApp()
 </script>
 

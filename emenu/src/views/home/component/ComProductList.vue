@@ -6,7 +6,7 @@
 
       <div class="flex bg-neutral-100 p-1 rounded-xl w-fit gap-1">
         <div
-          @click="viewMode = 'grid'"
+          @click="setViewMode('grid')"
           :class="['p-1 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
         >
 		<span class="block p-1">
@@ -14,7 +14,7 @@
 		  </span>
         </div>
         <div
-          @click="viewMode = 'list'"
+          @click="setViewMode('list')"
           :class="['p-1 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
         >
 		<span class="block p-1">
@@ -62,12 +62,16 @@ import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/vue"
 import ComProductCard from "@/components/ComProductCard.vue"
 import { useRouter } from "vue-router"
 import { useApp } from "@/hooks/useApp.js"
+import { useViewMode } from "@/hooks/useViewMode.js"
+const { viewMode, setViewMode } = useViewMode()
 const {
   isFavorite ,
   addToFavorite
 } = useApp()
 const router = useRouter()
-const viewMode = ref("grid")
+// const viewMode = ref("grid")
+
+
 
 const props = defineProps({
   products: { type: Array, default: () => [] },

@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue';
 import proxyOptions from './proxyOptions';
 
 export default defineConfig({
+	base: '/emenu/',
 	define: {
 		'process.env': {}
 	},

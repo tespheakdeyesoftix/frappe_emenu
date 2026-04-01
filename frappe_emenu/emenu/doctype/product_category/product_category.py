@@ -14,6 +14,7 @@ class ProductCategory(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		business_name: DF.Link | None
 		category_name: DF.Data | None
 		description: DF.TextEditor | None
 		photo: DF.AttachImage | None

@@ -25,6 +25,7 @@ class BusinessInformation(Document):
 		phone_number1: DF.Data | None
 		phone_number: DF.Data | None
 		photo: DF.AttachImage | None
+		placeholder_image: DF.AttachImage | None
 		show_hero_section: DF.Check
 		slogan: DF.Data | None
 		slogan_1: DF.Data | None

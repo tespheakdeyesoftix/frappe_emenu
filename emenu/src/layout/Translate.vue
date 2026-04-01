@@ -3,7 +3,7 @@
     <div class="lang-btn" @click="isOpen = !isOpen">
       <!-- Current Flag Image -->
       <img
-        :src="locale === 'km' ? '/images/Khmer.png' : '/images/English.png'"
+        :src="locale === 'km' ? KhmerFlag : EnglishFlag"
         :alt="locale === 'km' ? 'Khmer' : 'English'"
         class="flag-img"
       />
@@ -16,14 +16,14 @@
     <div v-if="isOpen" class="lang-dropdown">
       <!-- English Option -->
       <div class="lang-option" :class="{ active: locale === 'en' }" @click="changeLang('en')">
-        <img src="/images/English.png" alt="English" class="flag-img" />
+        <img :src="EnglishFlag" alt="English" class="flag-img" />
         English
         <ion-icon v-if="locale === 'en'" :icon="checkmark" class="check" />
       </div>
 
       <!-- Khmer Option -->
       <div class="lang-option" :class="{ active: locale === 'km' }" @click="changeLang('km')">
-        <img src="/images/Khmer.png" alt="Khmer" class="flag-img" />
+        <img :src="KhmerFlag" alt="Khmer" class="flag-img" />
         ភាសាខ្មែរ
         <ion-icon v-if="locale === 'km'" :icon="checkmark" class="check" />
       </div>
@@ -37,6 +37,9 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { chevronUp, chevronDown, checkmark } from 'ionicons/icons'
+
+import EnglishFlag from '/public/images/English.png'
+import KhmerFlag from '/public/images/Khmer.png'
 
 const { locale } = useI18n()
 const isOpen = ref(false)

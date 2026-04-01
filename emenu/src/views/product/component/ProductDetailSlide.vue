@@ -19,10 +19,13 @@
 >
   <swiper-slide v-for="(img, index) in images" :key="index">
     <div class="slide-card">
-      <img :src="img" />
+      <img :src="img || business_info.placeholder_image" :alt="productDetail.product_name" />
     </div>
+
   </swiper-slide>
+  	
 </swiper>
+<!-- {{ business_info.placeholder_image }} -->
   </div>
 </template>
 
@@ -33,25 +36,42 @@ import 'swiper/css/pagination'
 import { Autoplay, Pagination } from 'swiper/modules'
 import { computed  } from 'vue'
 
+import { useApp } from '@/hooks/useApp.js'
+
 export default {
   components: { Swiper, SwiperSlide },
     props: {
     	productDetail: Object
   	},
   setup(props) {
+	const { business_info} = useApp()
+	// const images = computed(() => {
+    //   return [
+    //     props.productDetail?.photo,
+    //     props.productDetail?.photo_1,
+    //     props.productDetail?.photo_2,
+    //     props.productDetail?.photo_3,
+    //     props.productDetail?.photo_4,
+    //     props.productDetail?.photo_5
+    //   ].filter(Boolean) // remove null/undefined
+    // })
 	const images = computed(() => {
-      return [
-        props.productDetail?.photo,
-        props.productDetail?.photo_1,
-        props.productDetail?.photo_2,
-        props.productDetail?.photo_3,
-        props.productDetail?.photo_4,
-        props.productDetail?.photo_5
-      ].filter(Boolean) // remove null/undefined
-    })
+  const photos = [
+    props.productDetail?.photo,
+    props.productDetail?.photo_1,
+    props.productDetail?.photo_2,
+    props.productDetail?.photo_3,
+    props.productDetail?.photo_4,
+    props.productDetail?.photo_5
+  ].filter(Boolean)
+
+  // ✅ if no photos at all, use placeholder
+  return photos.length ? photos : [business_info.value.placeholder_image]
+})
     return {
       modules: [Autoplay, Pagination],
-      images
+      images,
+	  business_info
     }
   }
 }
@@ -63,14 +83,13 @@ export default {
 
 }
 
-.slide-card {
+/* .slide-card {
   position: relative;
   width: 100%;
   border-radius: 16px;
   overflow: hidden;
-  /* Mobile: shorter height */
   height: 220px;
-}
+} */
 
 /* Tablet */
 @media (min-width: 640px) {

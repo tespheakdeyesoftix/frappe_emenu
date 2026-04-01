@@ -14,8 +14,8 @@
             @click="goToCategory(category)"
           >
             <img
-              v-if="category.photo"
-              :src="category.photo"
+              v-if="category.photo || business_info.placeholder_image"
+              :src="category.photo || business_info.placeholder_image"
               class="card-image"
               alt=""
             />
@@ -63,6 +63,9 @@ import {
 } from '@ionic/vue'
 import { arrowForward } from 'ionicons/icons'
 import { useRouter } from 'vue-router'
+import { useApp } from '@/hooks/useApp.js'
+
+const { business_info } = useApp()
 
 const router = useRouter()
 const page = ref(1)
