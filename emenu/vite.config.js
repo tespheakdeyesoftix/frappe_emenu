@@ -12,13 +12,16 @@ export default defineConfig({
 	server: {
 		port: 8080,
 		host: '0.0.0.0',
-		proxy: proxyOptions
+		proxy: proxyOptions,
+		allowedHosts:["estccoffee.aagj7.com"]
 	},
 
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, 'src'),
-			vue: 'vue/dist/vue.esm-bundler.js'
+			vue: 'vue/dist/vue.esm-bundler.js',
+			
+			
 		}
 	},
 

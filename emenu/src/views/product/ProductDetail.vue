@@ -9,11 +9,10 @@
 
       <!-- Top right actions -->
       <div class="hero-actions">
-        <!-- <div class="hero-action-btn">
-          <ion-icon :icon="shareOutline" />
-        </div> -->
         <div class="hero-action-btn">
-          <ion-icon :icon="heartOutline" />
+			<button @click.stop="toggleFavorite(productDetail)" :class="[' top-3 right-3 p-2 rounded-full glass transition-colors', productDetail.isFavorite ? 'text-red-500' : 'text-neutral-600']">
+				<Heart size="18" :fill="isFavorite(productDetail.name) ? 'red' : 'none'" />
+			</button>
         </div>
       </div>
     </div>
@@ -28,12 +27,31 @@
         </span>
       </div>
 
-      <div class="text-2xl font-bold text-orange-500">
-		{{ formatPrice(productDetail.price) }}
-      </div>
+	  <div class="flex justify-between ">
+			<div v-if="productDetail.price">
+				<p>{{ t("Price") }}</p>
+				<div class="text-2xl font-bold text-orange-500">
+					{{ formatPrice(productDetail.price) }}
+				</div>
+			</div>
+			<div v-if="productDetail.installment_price">
+				<p>{{ t("Installment Price") }}</p>
+				<div class="text-2xl font-bold text-orange-500">
+					{{ formatPrice(productDetail.installment_price) }}
+				</div>
+			</div>
+	  </div>
 
-      <div class="mt-4">
-        <h4 class="text-base font-semibold text-gray-900 mb-1">Description</h4>
+		<div class="flex gap-2 flex-wrap py-3" v-if="productDetail._user_tags">
+			<ion-chip
+				v-for="tag in (productDetail._user_tags || '').split(',')"
+				:key="tag"
+			>
+			<ion-label class="p-2">{{ tag }}</ion-label>
+			</ion-chip>
+		</div>
+      <div v-if="productDetail.description">
+        <h4 class="text-base font-semibold text-gray-900 pt-2" style="margin: 0;">{{ t("Description") }}</h4>
         <p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail.description"></p>
       </div>
 
@@ -41,7 +59,7 @@
     <a v-if="business_info.telegram" :href="business_info.telegram" target="_blank" class="flex-1">
         <button class="contact-btn telegram w-full">
             <ion-icon :icon="paperPlaneOutline" />
-            Contact Telegram
+            {{ t("Contact Telegram") }}
         </button>
     </a>
     <a v-if="business_info.facebook" :href="business_info.facebook" target="_blank" class="flex-1">
@@ -68,18 +86,16 @@ import {
   logoFacebook
 } from 'ionicons/icons';
 import ProductDetailSlide from "@/views/product/component/ProductDetailSlide.vue";
-
+import { useApp } from "@/hooks/useApp.js"
+import { Heart } from "lucide-vue-next"
 const route = useRoute();
 const router = useRouter();
 const productDetail = ref({});
-
-import { useApp } from "@/hooks/useApp.js"
-const {business_info} =useApp()
-
+const {business_info,isFavorite,addToFavorite} =useApp()
 
 async function getProductDetail() {
   const res = await app.getDocList("Products", {
-    fields: ["name", "product_name", "price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
+    fields: ["name", "product_name", "price","installment_price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
     filters: [["name", "=", route.params.name]]
   });
   if (res.data) {
@@ -90,6 +106,10 @@ async function getProductDetail() {
 function formatPrice(price) {
   if (!price) return "$0"
   return `$${price.toLocaleString()}`
+}
+
+function toggleFavorite(productDetail) {
+ addToFavorite(productDetail.name)
 }
 
 onMounted(() => {

@@ -4,6 +4,7 @@ const messages = {
   en: {
     welcome: "Welcome",
     login: "Login",
+	"Featured Today": "Featured"
   },
   km: {
     welcome: "សូមស្វាគមន៍",
@@ -91,17 +92,39 @@ const messages = {
     "System Info":"ព័ត៌មានប្រព័ន្ធ",
     "Created": "បង្កើត",
     "Modified": "បានកែប្រែ",
-    "Owner": "ម្ចាស់"
-    
+    "Owner": "ម្ចាស់",
+	"Featured Today":"ថ្មីៗ និងពិសេស",
+	"Products":"ផលិតផល",
+	"Home":"ទំព័រដើម",
+	"Category":"ប្រភេទផលិតផល",
+	"Categories":"ប្រភេទផលិតផល",
+	"Favorite":"ចំណូលចិត្ត",
+	"Contact":"ទំនាក់ទំនង",
+	"Favorite Items":"ផលិតផលដែលចូលចិត្ត",
+	"Phone Number 1":"លេខទូរស័ព្ទខ្សែ 1",
+	"Phone Number 2":"លេខទូរស័ព្ទខ្សែ 2",
+	"Email":"អ៊ីមែល",
+	"PRODUCTS":"ផលិតផល",
+	"No products found":"មិនមានផលិតផលទេ",
+	"Items Available":"ទំនិញដែលមាន",
+	"Price":"តម្លៃ",
+	"Installment Price":"តម្លៃបង់រំលោះ",
+	"Description":"ពិពណ៌នា",
+	"Explore Now":"ស្វែងរកឥឡូវនេះ",
+	"Address":"អាស័យដ្ឋាន",
+	"Opening Hours":"ម៉ោងបើក",
   }
 }
+
+const savedLang = localStorage.getItem('lang') || 'km'
 
 const i18n = createI18n({
   legacy: false, // recommended for Vue 3
    globalInjection: true,
-  locale: 'km',  // default language
+   locale: savedLang,
   fallbackLocale: 'en',
   messages
 })
+window.t = (key, params = {}) => i18n.global.t(key, params)
 
 export default i18n

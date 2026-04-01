@@ -6,7 +6,7 @@
       <div class="profile-header">
         <div class="avatar-wrapper">
           <img
-            src="https://i.pravatar.cc/100?img=11"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
             alt="Profile"
             class="avatar-img"
           />
@@ -15,43 +15,80 @@
           </button>
         </div>
         <div class="profile-info">
-          <h2 class="profile-name">Alex Johnson</h2>
-          <p class="profile-email">alex.j@example.com</p>
+          <h2 class="profile-name">Welcome, Guest</h2>
+          <p class="profile-email">{{ business_info.slogan_1 }}<br/>{{ business_info.slogan_2 }}</p>
         </div>
       </div>
-
       <!-- Menu List -->
-      <div class="menu-card">
-        <div class="menu-item" @click="navigate('orders')">
-          <div class="menu-icon-wrap">
-            <ion-icon :icon="bagOutline" class="menu-icon" />
-          </div>
-          <span class="menu-label">My Orders</span>
-          <span class="badge">3</span>
-          <ion-icon :icon="chevronForward" class="arrow-icon" />
-        </div>
+      <div class="menu-card py-5 my-5">
 
-        <div class="divider" />
-
-        <div class="menu-item" @click="navigate('favorites')">
+		<router-link to="/favorite">
+        <div class="menu-item">
           <div class="menu-icon-wrap">
             <ion-icon :icon="heartOutline" class="menu-icon" />
           </div>
-          <span class="menu-label">Favorite Items</span>
+          <span class="menu-label">{{t("Favorite Items")}}</span>
           <ion-icon :icon="chevronForward" class="arrow-icon" />
         </div>
+		</router-link>
 
-        <div class="divider" />
+		<div v-if="business_info.phone_number">
+			<div class="divider" />
+			<div class="menu-item">
+				<div class="menu-icon-wrap">
+					<ion-icon :icon="callOutline" class="menu-icon" />
+				</div>
+				<span class="menu-label">{{t("Phone Number 1")}} <br/>
+					{{ business_info.phone_number }}
+				</span>
+			</div>
+		</div>
 
-        <div class="menu-item" @click="navigate('settings')">
-          <div class="menu-icon-wrap orange">
-            <ion-icon :icon="settingsOutline" class="menu-icon orange-icon" />
-          </div>
-          <span class="menu-label">Settings</span>
-          <ion-icon :icon="chevronForward" class="arrow-icon" />
-        </div>
+		<div v-if="business_info.phone_number1">
+			<div class="divider" />
+			<div class="menu-item">
+				<div class="menu-icon-wrap">
+					<ion-icon :icon="callOutline" class="menu-icon" />
+				</div>
+				<span class="menu-label">{{t("Phone Number 2")}} <br/>
+					{{ business_info.phone_number1 }}
+				</span>
+			</div>
+		</div>
 
-        <div class="divider" />
+       <!-- Social Media Links -->
+		<div v-if="business_info.tik_tok">
+			<div class="divider" />
+			<div class="menu-item" @click="openLink(business_info.tik_tok)">
+				<div class="menu-icon-wrap">
+					<ion-icon :icon="logoTiktok" class="menu-icon" />
+				</div>
+				<span class="menu-label">TikTok</span>
+				<ion-icon :icon="chevronForward" class="arrow-icon" />
+			</div>
+		</div>
+
+
+		<div class="divider" />
+		<div class="menu-item" @click="openLink(business_info.telegram)">
+			<div class="menu-icon-wrap">
+				<ion-icon :icon="paperPlaneOutline" class="menu-icon" />
+			</div>
+			<span class="menu-label">Telegram</span>
+			<ion-icon :icon="chevronForward" class="arrow-icon" />
+		</div>
+
+		<div class="divider" />
+		<div class="menu-item" @click="openLink(business_info.facebook)">
+			<div class="menu-icon-wrap">
+				<ion-icon :icon="logoFacebook" class="menu-icon" />
+			</div>
+			<span class="menu-label">Facebook</span>
+			<ion-icon :icon="chevronForward" class="arrow-icon" />
+		</div>
+
+
+		<!-- <div class="divider" />
 
         <div class="menu-item" @click="navigate('support')">
           <div class="menu-icon-wrap">
@@ -60,13 +97,21 @@
           <span class="menu-label">Contact Support</span>
           <ion-icon :icon="chevronForward" class="arrow-icon" />
         </div>
+ <div class="divider" />
+        <div class="menu-item" @click="navigate('settings')">
+          <div class="menu-icon-wrap orange">
+            <ion-icon :icon="settingsOutline" class="menu-icon orange-icon" />
+          </div>
+          <span class="menu-label">Settings</span>
+          <ion-icon :icon="chevronForward" class="arrow-icon" />
+        </div> -->
       </div>
 
       <!-- Logout Button -->
-      <div class="logout-card" @click="logout">
+      <!-- <div class="logout-card" @click="logout">
         <ion-icon :icon="logOutOutline" class="logout-icon" />
         <span class="logout-text">Logout</span>
-      </div>
+      </div> -->
 
     </ion-content>
   </ion-page>
@@ -82,10 +127,25 @@ import {
   helpCircleOutline,
   chevronForward,
   logOutOutline,
+  logoTiktok,
+  logoFacebook,
+  paperPlaneOutline,
+  callOutline
 } from 'ionicons/icons';
 
+import { useApp } from "@/hooks/useApp.js"
+const {business_info} =useApp()
+
 const navigate = (page) => {
-  console.log('Navigate to:', page);
+//   console.log('Navigate to:', page);
+};
+
+const openLink = (url) => {
+  if (!url) {
+    return;
+  }
+  if (!url.startsWith('http')) url = 'https://' + url; // ensure proper protocol
+  window.open(url, '_blank');
 };
 
 const logout = () => {
@@ -102,10 +162,10 @@ const logout = () => {
 .profile-header {
   background: linear-gradient(135deg, #ff6b35 0%, #ff4500 100%);
   border-radius: 0 0 28px 28px;
-  padding: 48px 24px 32px;
+  padding: 40px 18px 32px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 15px;
   box-shadow: 0 8px 24px rgba(255, 80, 0, 0.28);
 }
 
@@ -162,7 +222,7 @@ const logout = () => {
 .menu-card {
   background: #fff;
   border-radius: 20px;
-  margin: 20px 16px 0;
+  margin: 20px 16px 16px;
   padding: 4px 0;
   box-shadow: 0 2px 16px rgba(0,0,0,0.06);
   overflow: hidden;

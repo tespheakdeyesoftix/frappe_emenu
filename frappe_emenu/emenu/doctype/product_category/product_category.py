@@ -17,6 +17,8 @@ class ProductCategory(Document):
 		category_name: DF.Data | None
 		description: DF.TextEditor | None
 		photo: DF.AttachImage | None
+		published: DF.Check
+		total_products: DF.Int
 	# end: auto-generated types
 
 	pass

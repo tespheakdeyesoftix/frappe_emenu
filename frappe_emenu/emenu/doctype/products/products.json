@@ -11,7 +11,9 @@
   "category",
   "category_name",
   "price",
+  "installment_price",
   "is_feature",
+  "published",
   "column_break_fxus",
   "photo",
   "photo_1",
@@ -112,13 +114,25 @@
    "fieldtype": "Link",
    "label": "Business Name",
    "options": "Business Information"
+  },
+  {
+   "default": "0",
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "Published"
+  },
+  {
+   "fieldname": "installment_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Installment Price"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-28 10:59:22.320918",
+ "modified": "2026-03-31 11:08:18.293722",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Products",

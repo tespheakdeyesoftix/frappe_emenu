@@ -7,7 +7,10 @@
  "field_order": [
   "category_name",
   "photo",
-  "description"
+  "description",
+  "column_break_xgum",
+  "total_products",
+  "published"
  ],
  "fields": [
   {
@@ -25,13 +28,29 @@
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
+  },
+  {
+   "fieldname": "column_break_xgum",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_products",
+   "fieldtype": "Int",
+   "label": "Total Products",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "Published"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-28 11:48:05.214504",
+ "modified": "2026-03-30 15:17:57.420611",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Product Category",

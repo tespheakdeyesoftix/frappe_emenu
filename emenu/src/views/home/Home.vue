@@ -1,12 +1,15 @@
 <template>
     <ion-page>
         <ion-content>
+			<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
+				<ion-refresher-content />
+			</ion-refresher>
   <div class="pb-0 main-background">
 	<ComHeader />
     <!-- Featured Slider -->
     <section class="py-4">
-      <div class="px-4 mb-4 flex items-center justify-between">
-        <h3 class="font-bold text-lg">Featured Today</h3>
+      <div class="px-4 mb-2 flex items-center justify-between">
+        <h3 class="font-bold text-lg">{{t("Featured Today")}}</h3>
         <!-- <button class="text-accent text-sm font-bold">View All</button> -->
       </div>
 	  <div class="px-4">
@@ -16,7 +19,7 @@
 
     <!-- Products List -->
     <section class="px-4 py-4">
-		<ComProductList :products="products" />
+		<ComProductList :products="products" @load-more="loadMore" :has-more="hasMore" />
     </section>
   </div>
         </ion-content>
@@ -25,22 +28,56 @@
 
 <script setup>
 import { ref, computed,onMounted } from 'vue'
-import { IonPage,IonContent } from '@ionic/vue'
+import { IonPage,IonContent,IonRefresher, IonRefresherContent } from '@ionic/vue'
 import Featured from "@/views/home/component/ComFeatured.vue"
 import ComProductList from "@/views/home/component/ComProductList.vue"
 import ComHeader from "@/views/home/component/ComHeader.vue"
 
 const products = ref([])
+const page = ref(1)
+const pageSize = 10
+const hasMore = ref(true)
 
-async function getProducts() {
-	const res = await app.getDocList('Products',{
-		fields: ['name', 'product_name', 'price', 'photo_1', 'category_name'],
-	})
-	if (res.data) products.value = res.data
+async function getProducts(reset = false) {
+  const res = await app.getDocList('Products', {
+    fields: ['name', 'product_name', 'price', 'photo_1', 'category_name'],
+	filters: [['published', '=', 1]],
+    limit: pageSize,
+    limit_start: (page.value - 1) * pageSize,
+  })
+
+  if (res.data) {
+    if (reset) {
+      products.value = res.data
+    } else {
+      products.value.push(...res.data)
+    }
+    hasMore.value = res.data.length === pageSize
+
+    // ✅ Auto-load next page if content doesn't fill screen
+    if (reset && hasMore.value) {
+      page.value++
+      await getProducts()
+    }
+  }
+}
+
+async function loadMore(event) {
+  page.value++
+  await getProducts()
+  event.target.complete()
+}
+
+async function handleRefresh(event) {
+  page.value = 1;
+  hasMore.value = true;
+  products.value = [];       // clear first
+  await getProducts(true);
+  event.target.complete();
 }
 
 onMounted(() => {
-	getProducts()
+	getProducts(true)
 })
 
 </script>

@@ -8,11 +8,16 @@
  "field_order": [
   "sub_domain_name",
   "business_name",
+  "slogan",
+  "slogan_1",
+  "slogan_2",
   "photo",
   "contact_name",
   "phone_number",
+  "phone_number1",
   "facebook",
   "telegram",
+  "tik_tok",
   "address",
   "column_break_msan",
   "business_hour",
@@ -93,13 +98,38 @@
    "fieldname": "hero_intro",
    "fieldtype": "Small Text",
    "label": "Hero Intro"
+  },
+  {
+   "fieldname": "slogan",
+   "fieldtype": "Data",
+   "label": "Slogan"
+  },
+  {
+   "fieldname": "tik_tok",
+   "fieldtype": "Data",
+   "label": "Tik Tok"
+  },
+  {
+   "fieldname": "phone_number1",
+   "fieldtype": "Data",
+   "label": "Phone Number1"
+  },
+  {
+   "fieldname": "slogan_1",
+   "fieldtype": "Data",
+   "label": "Slogan 1"
+  },
+  {
+   "fieldname": "slogan_2",
+   "fieldtype": "Data",
+   "label": "Slogan 2"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-03-28 11:42:33.792331",
+ "modified": "2026-03-31 10:12:09.059853",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Business Information",

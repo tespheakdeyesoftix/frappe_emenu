@@ -1,6 +1,9 @@
 <template>
 	<ion-page>
 		<ion-content>
+			<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
+				<ion-refresher-content />
+			</ion-refresher>
 			<div class="page-wrapper">
 				<div class="hero">
 					<img
@@ -14,32 +17,60 @@
 					</div>
 					<div class="hero-info">
 						<div class="hero-title">{{ category?.category_name }}</div>
-						<div class="hero-subtitle">{{ products.length }} Items Available</div>
+						<div class="hero-subtitle">{{ category?.total_products }} {{ t("Items Available") }}</div>
 					</div>
 				</div>
 
-				<div>
-					<div class="p-3">
-						<div class="grid grid-cols-2 gap-4">
-							<div v-for="product in products" :key="product.name" @click="handleProductClick(product)">
-								<div class="bg-white rounded-3xl shadow-sm border border-neutral-100 overflow-hidden flex flex-col">
-									<div class="relative aspect-square overflow-hidden">
-										<img :src="product.photo_1" :alt="product.title" class="w-full h-full object-cover" />
-										<button @click.stop="toggleFavorite(product)" :class="['absolute top-3 right-3 p-2 rounded-full glass transition-colors', product.isFavorite ? 'text-red-500':'text-neutral-600']">
-											<Heart size="18" :fill="product.isFavorite ? 'red' : 'none'" />
-										</button>
-									</div>
-									<div class="p-4">
-										<h3 class="font-bold text-neutral-800 truncate text-sm">{{ product.product_name }}</h3>
-										<p class="text-[10px] text-neutral-400 mb-2 uppercase tracking-tight">{{ product.category }}</p>
-										<div class="flex items-center justify-between">
-											<span class="font-bold text-accent">{{ formatPrice(product.price) }}</span>
-											<button class="p-1.5 bg-neutral-900 text-white rounded-xl"><Plus size="16" /></button>
-										</div>
-									</div>
+				<div v-if="product.length > 0" class="p-3">
+					<div class="flex justify-end">
+						<div class="inline-flex bg-neutral-100 p-1 rounded-xl justify-end my-4 gap-1">
+							<div
+							@click="viewMode = 'grid'"
+							:class="['p-1 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
+							>
+							<span class="block p-1">
+								<Grid size="20" />
+							</span>
+							</div>
+							<div
+							@click="viewMode = 'list'"
+							:class="['p-1 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
+							>
+							<span class="block p-1">
+							<List size="20" />
+							</span>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div>
+							<div :class="['grid gap-4', viewMode === 'grid' ? 'grid-cols-2' : 'grid-cols-1']">
+								<div v-for="p in product" :key="p.name"
+								@click="handleProductClick(p)">
+									<ComProductCard :product="p" :view="viewMode"/>
 								</div>
 							</div>
 						</div>
+					</div>
+					<ion-infinite-scroll
+						@ionInfinite="loadMore"
+						threshold="100px"
+						:disabled="!hasMore"
+					>
+						<ion-infinite-scroll-content
+						loading-spinner="crescent"
+						loading-text="Loading more..."
+						/>
+					</ion-infinite-scroll>
+				</div>
+				<div v-else class="text-center py-16 text-neutral-400">
+					<div class="relative flex items-center justify-center">
+						<div class="w-20 h-20 rounded-xl bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center">
+							<PackageX class="w-9 h-9 text-neutral-400" :stroke-width="1.5" />
+						</div>
+					</div>
+					 <div class="text-center flex flex-col gap-1.5">
+						<p class="text-sm font-medium text-neutral-700 dark:text-neutral-200">{{ t("No products found") }}</p>
 					</div>
 				</div>
 			</div>
@@ -48,18 +79,25 @@
 </template>
 
 <script setup>
-import { IonPage, IonContent, IonIcon } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon,IonInfiniteScroll, IonInfiniteScrollContent,IonRefresher,
+  IonRefresherContent } from '@ionic/vue';
 import { ref, onMounted, computed } from 'vue';
 import { chevronBackOutline } from 'ionicons/icons';
 import { useRoute, useRouter } from 'vue-router';
-import { Heart, Plus } from 'lucide-vue-next'
+import { Heart, Plus,Grid,Menu,Table, List,PackageX, SearchX, XCircle, LayoutGrid } from 'lucide-vue-next'
+import ComProductCard from "@/components/ComProductCard.vue"
 
 const route = useRoute();
 const router = useRouter();
 const categoryName = route.params.name;
 const categories = ref([]);
-const products = ref([]);
+const product = ref([]);
 const category = computed(() => categories.value[0]);
+const viewMode = ref("grid")
+
+const page = ref(1)
+const pageSize = 10
+const hasMore = ref(true)
 
 function handleProductClick(product) {
 	router.push({
@@ -69,18 +107,48 @@ function handleProductClick(product) {
 
 async function getCategories() {
   const res = await app.getDocList('Product Category', {
-    fields: ['name', 'category_name', 'photo'],
+    fields: ['name', 'category_name', 'photo','total_products'],
     filters: [['name', '=', categoryName]]
   });
   if (res.data) categories.value = res.data;
 }
 
-async function getProducts() {
+async function getProducts(reset = false) {
   const res = await app.getDocList('Products', {
-	fields: ['name', 'product_name', 'price', 'photo_1'],
-    filters: [['category', '=', categoryName]]
+    fields: ['name', 'product_name', 'price', 'photo_1'],
+    filters: [['category', '=', categoryName], ['published', '=', 1]],
+    limit: pageSize,
+    limit_start: (page.value - 1) * pageSize,
   });
-  if (res.data) products.value = res.data;
+
+  if (res.data) {
+    if (reset) {
+      product.value = res.data
+    } else {
+      product.value.push(...res.data)
+    }
+    hasMore.value = res.data.length === pageSize
+
+    // ✅ Auto-load next page if first load doesn't fill screen
+    if (reset && hasMore.value) {
+      page.value++
+      await getProducts()
+    }
+  }
+}
+
+async function loadMore(event) {
+  page.value++
+  await getProducts()
+  event.target.complete()  // ✅ stop the spinner
+}
+
+async function handleRefresh(event) {
+  page.value = 1;
+  hasMore.value = true;
+  product.value = [];        // clear old data
+  await getProducts(true);   // pass boolean true
+  event.target.complete();
 }
 
 function formatPrice(price) {
@@ -94,7 +162,7 @@ function toggleFavorite(product) {
 
 onMounted(() => {
   getCategories();
-  getProducts();
+  getProducts(true);
 });
 </script>
 
@@ -134,9 +202,10 @@ onMounted(() => {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(13, 13, 15, 0.95) 0%,
-    rgba(13, 13, 15, 0.2) 60%,
-    transparent 100%
+    rgba(255, 255, 255, 1.00) 0%,   /* solid white at bottom */
+    rgba(255, 255, 255, 0.60) 25%,  /* mid fade */
+    rgba(255, 255, 255, 0.10) 50%,  /* light fade */
+    transparent 100%                 /* transparent at top */
   );
 }
 
@@ -167,6 +236,7 @@ onMounted(() => {
 .hero-title {
   font-size: 32px;
   font-weight: 700;
+   color: #111111;
   color: white;
   line-height: 1.1;
 }
@@ -180,7 +250,7 @@ onMounted(() => {
 
 .hero-subtitle {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.55);
   margin-top: 4px;
 }
 </style>

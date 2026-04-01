@@ -1,19 +1,22 @@
 <template>
 	<div>
 		<div >
-			<header class="px-4 pt-6   flex items-center justify-between">
+			<header class="px-4 pt-6 flex items-center justify-between">
 				<div class="flex items-center gap-3" >
-					<div class="w-20 h-20 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
+					<div class="w-15 h-15 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
 						 <img :src="business_info.photo" class="rounded-lg"  />
 					</div>
 					<div>
-						<h1 class="font-bold text-xl tracking-tight" style="margin: 0;">{{business_info.business_name}}</h1>
-						<p class="text-xs text-neutral-400 font-medium">Premium Vehicles & Tech</p>
+						<h2 class="font-bold text-xl tracking-tight" style="margin: 0;">{{business_info.business_name}}</h2>
+						<p class="text-xs text-neutral-400 font-medium">{{ business_info.slogan }}</p>
 					</div>
 				</div>
-				<button class="p-3 glass rounded-2xl text-neutral-600">
-					<Search size="20" />
-				</button> 
+				<div class="flex gap-3">
+					<button class="p-3 glass rounded-2xl text-neutral-600">
+						<Search size="20" />
+					</button>
+					<Translate />
+				</div>
 			</header>
 			<section class="px-4 py-4" v-if="business_info.show_hero_section > 0">
 			<div class="relative rounded-3xl overflow-hidden min-h-[280px] bg-neutral-900 shadow-xl flex flex-col">
@@ -22,7 +25,7 @@
 					:src="business_info.hero_photo"
 					alt="Hero"
 					class="absolute inset-0 w-full h-full object-cover opacity-50"
-					 
+
 				/>
 				<img
 					v-else
@@ -37,19 +40,21 @@
 				<p class="text-white/70 text-sm mb-6 max-w-[240px]">
 					{{ business_info.hero_intro }}
 				</p>
-				<div class="flex gap-3">
-					<router-link to="/category">
-						<button  class="bg-accent text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-accent/30 active:scale-95 transition-transform" style="padding: 5px; border-radius: 5px;">
-							Explore Now
+				<div class="flex gap-3 justify-center w-full">
+					<router-link to="/category" class="flex-1">
+						<button  class="bg-accent text-white w-full px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-accent/30 active:scale-95 transition-transform" style="padding: 10px; border-radius: 5px;">
+							{{t("Explore Now")}}
 						</button>
 					</router-link>
-					<a v-if="business_info.telegram" :href="business_info.telegram" target="_blank">
-						<button
-							class="glass-dark text-white px-4 py-3 rounded-2xl font-bold text-sm active:scale-95 transition-transform flex items-center gap-2" style="padding: 5px; border-radius: 5px;"
+					<a
+						  v-if="business_info.telegram"
+						:href="business_info.telegram.startsWith('http') ? business_info.telegram : 'https://' + business_info.telegram"
+						target="_blank"
+						class="glass-dark flex-1 w-full text-white font-bold text-sm active:scale-95 transition-transform flex items-center justify-center gap-2"
+						style="padding: 10px; border-radius: 5px; color: white; text-decoration: none;"
 						>
-							<Send size="16" /> Contact
-						</button>
-					</a>
+						<Send size="16" /> {{ t("Contact") }}
+						</a>
 				</div>
 				</div>
 
@@ -57,14 +62,14 @@
 				<div class="flex items-center gap-3">
 					<div class="p-2 bg-white/10 rounded-lg text-white/80"><MapPin size="14" /></div>
 					<div class="text-[10px] text-white/60">
-					<p class="font-bold text-white/90">Main Showroom</p>
+					<p class="font-bold text-white/90">{{t("Address")}}</p>
 					<p>{{ business_info.address }}</p>
 					</div>
 				</div>
 				<div class="flex items-center gap-3">
 					<div class="p-2 bg-white/10 rounded-lg text-white/80"><Clock size="14" /></div>
 					<div class="text-[10px] text-white/60 text-right">
-					<p class="font-bold text-white/90">Open Today</p>
+					<p class="font-bold text-white/90">{{t("Opening Hours")}}</p>
 					<p>{{ business_info.business_hour }}</p>
 					</div>
 				</div>
@@ -77,8 +82,9 @@
 
 <script setup>
 import { Heart, Grid, List, Plus, ShoppingBag, Send, Search, MapPin, Clock } from 'lucide-vue-next'
-
 import { useApp } from "@/hooks/useApp.js"
+
+import Translate from "@/layout/Translate.vue"
 
 const {business_info} =useApp()
 </script>

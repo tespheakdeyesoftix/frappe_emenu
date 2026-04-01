@@ -1,13 +1,51 @@
 # Copyright (c) 2026, Tes Pheakdey and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
 class Products(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
+
+	def before_save(self):
+		self._old_category = self.get_db_value("category")
+		self._old_published = self.get_db_value("published")
+
+	def after_insert(self):
+		if self.category:
+			self.update_total_products(self.category)
+
+	def on_update(self):
+		old_category = getattr(self, "_old_category", None)
+		new_category = self.category
+
+		old_published = getattr(self, "_old_published", None)
+		new_published = self.published
+
+		if old_category and old_category != new_category:
+			self.update_total_products(old_category)
+
+		if old_published != new_published:
+			if old_category:
+				self.update_total_products(old_category)
+
+		if new_category:
+			self.update_total_products(new_category)
+
+	def on_trash(self):
+		if self.category:
+			self.update_total_products(self.category)
+
+	def update_total_products(self, category):
+		total = frappe.db.count("Products", {"category": category,"published": 1})
+		frappe.db.set_value(
+            "Product Category",
+            category,
+            "total_products",
+            total
+        )
 
 	from typing import TYPE_CHECKING
 
@@ -18,6 +56,7 @@ class Products(Document):
 		category: DF.Link | None
 		category_name: DF.Data | None
 		description: DF.TextEditor | None
+		installment_price: DF.Currency
 		is_feature: DF.Check
 		photo: DF.AttachImage | None
 		photo_1: DF.AttachImage | None
@@ -28,6 +67,10 @@ class Products(Document):
 		price: DF.Currency
 		product_code: DF.Data | None
 		product_name: DF.Data | None
+		published: DF.Check
 	# end: auto-generated types
 
 	pass
+
+
+

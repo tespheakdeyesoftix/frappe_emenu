@@ -2,20 +2,25 @@
   <div>
     <!-- Header with Grid/List toggle -->
     <div class="mb-2 flex items-center justify-between">
-      <h3 class="font-bold text-lg">Our Products</h3>
-      <div class="flex bg-neutral-100 p-1 rounded-xl">
-        <button
+      <h3 class="font-bold text-lg">{{t("Products")}}</h3>
+
+      <div class="flex bg-neutral-100 p-1 rounded-xl w-fit gap-1">
+        <div
           @click="viewMode = 'grid'"
-          :class="['p-1.5 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-accent' : 'text-neutral-400']"
+          :class="['p-1 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
         >
-          <Grid size="18" />
-        </button>
-        <button
+		<span class="block p-1">
+          <Grid size="20" />
+		  </span>
+        </div>
+        <div
           @click="viewMode = 'list'"
-          :class="['p-1.5 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-accent' : 'text-neutral-400']"
+          :class="['p-1 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-orange-500' : 'text-neutral-400']"
         >
-          <List size="18" />
-        </button>
+		<span class="block p-1">
+          <List size="20" />
+		  </span>
+        </div>
       </div>
     </div>
 
@@ -27,22 +32,33 @@
         class="relative cursor-pointer h-full"
         @click="handleProductClick(product)"
       >
-
         <ComProductCard :product="product" :view="viewMode"/>
-
       </div>
     </div>
 
     <!-- Empty State -->
     <div v-if="products.length === 0" class="text-center py-16 text-neutral-400">
-      <p class="text-sm">No products found.</p>
+      <p class="text-sm">{{ t("No products found") }}</p>
     </div>
+
+	 <!-- ✅ Infinite Scroll -->
+    <ion-infinite-scroll
+      @ionInfinite="emit('load-more', $event)"
+      threshold="100px"
+      :disabled="!hasMore"
+    >
+      <ion-infinite-scroll-content
+        loading-spinner="crescent"
+        loading-text="Loading more..."
+      />
+    </ion-infinite-scroll>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue"
-import { Heart, Grid, List, Plus } from "lucide-vue-next"
+import { Heart, Grid, List, Plus} from "lucide-vue-next"
+import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/vue"
 import ComProductCard from "@/components/ComProductCard.vue"
 import { useRouter } from "vue-router"
 import { useApp } from "@/hooks/useApp.js"
@@ -54,8 +70,11 @@ const router = useRouter()
 const viewMode = ref("grid")
 
 const props = defineProps({
-  products: { type: Array, default: () => [] }
+  products: { type: Array, default: () => [] },
+   hasMore: { type: Boolean, default: true },
 })
+
+const emit = defineEmits(['load-more'])
 
 function formatPrice(price) {
   if (!price) return "$0"
@@ -64,8 +83,6 @@ function formatPrice(price) {
 
 function toggleFavorite(product) {
  addToFavorite(product.name)
-
-
 }
 
 function handleProductClick(product) {
