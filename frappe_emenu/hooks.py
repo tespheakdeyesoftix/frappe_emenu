@@ -120,9 +120,9 @@ app_license = "mit"
 # -----------
 # Permissions evaluated in scripted ways
 
- 
+
 permission_query_conditions = {
-    "Products": "frappe_emenu.permission.product_permission", 
+    "Products": "frappe_emenu.permission.product_permission",
 }
 
 

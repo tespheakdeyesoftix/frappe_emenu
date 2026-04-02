@@ -3,19 +3,16 @@ import Favorite from '@/views/favorite/Favorite.vue';
 import Category from '@/views/category/Category.vue';
 import MyAccount from '@/views/my-account/MyAccount.vue';
 import Tabs from '@/views/Tabs.vue';
-import ComShowProductByCategory from '@/views/category/component/ComShowProductByCategory.vue'
-import ProductDetail from "@/views/product/ProductDetail.vue"
+import ComShowProductByCategory from '@/views/category/component/ComShowProductByCategory.vue';
+import ProductDetail from "@/views/product/ProductDetail.vue";
 
 const routes = [
   {
     path: '/',
-  },
-  {
-    path: '/',
     component: Tabs,
-      children: [
+    children: [
       {
-        path: '/',
+        path: '',
         component: Home,
       },
       {
@@ -24,7 +21,7 @@ const routes = [
       },
       {
         path: 'favorite',
-        component: Favorite ,
+        component: Favorite,
       },
       {
         path: 'my-account',
@@ -35,23 +32,11 @@ const routes = [
         component: ComShowProductByCategory,
       },
       {
-        path: '/product-detail/:name',
+        path: 'product-detail/:name', // ✅ FIXED (removed /)
         component: ProductDetail,
       },
-
-
-    ]
+    ],
   },
-  // {
-  //       path: '/product-detail/:name',
-  //       component: ProductDetail,
-  //     },
-
-  // {
-  //   path: '/edit-loan-detail/:name',
-  //    component: () => import('@/views/loan/EditLoanDetail.vue'),
-  // },
-
-
 ];
-export default routes
+
+export default routes;
