@@ -26,6 +26,19 @@ import { useApp } from "@/hooks/useApp.js"
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+import { useIonRouter } from '@ionic/vue';
+const props = defineProps({
+  routeAction: {
+    type:String,
+    default:"push"
+  }
+})
+ 
+
+const ionRouter = useIonRouter();
+
+
+
 const { tag } = useApp()
 const scrollContainer = ref(null);
 const isDragging = ref(false);
@@ -64,7 +77,9 @@ function stopDrag() {
 
 function gotoTag(name) {
   if (hasDragged.value) return;
-  router.replace(`/tag/${name}`);
+  
+  ionRouter.navigate(`/tag/${name}`, 'forward', props.routeAction);
+
 }
 </script>
 

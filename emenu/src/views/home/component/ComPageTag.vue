@@ -13,7 +13,7 @@
 		<div class="px-4 py-5">
 
 			<div class="mb-3">
-				<ComTag />
+				<ComTag  routeAction="replace"/>
 			</div>
 			
 			<div class="flex justify-end">
