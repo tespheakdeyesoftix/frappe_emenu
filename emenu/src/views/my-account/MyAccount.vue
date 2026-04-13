@@ -9,10 +9,11 @@
             src="https://ionicframework.com/docs/img/demos/avatar.svg"
             alt="Profile"
             class="avatar-img"
+			loading="lazy"
           />
-          <button class="edit-btn">
+          <!-- <button class="edit-btn">
             <ion-icon :icon="pencil" />
-          </button>
+          </button> -->
         </div>
         <div class="profile-info">
           <h2 class="profile-name">Welcome, Guest</h2>
@@ -34,26 +35,26 @@
 
 		<div v-if="business_info.phone_number">
 			<div class="divider" />
-			<div class="menu-item">
+			<a :href="'tel:' + business_info.phone_number" class="menu-item">
 				<div class="menu-icon-wrap">
 					<ion-icon :icon="callOutline" class="menu-icon" />
 				</div>
 				<span class="menu-label">{{t("Phone Number 1")}} <br/>
 					{{ business_info.phone_number }}
 				</span>
-			</div>
+			</a>
 		</div>
 
 		<div v-if="business_info.phone_number1">
 			<div class="divider" />
-			<div class="menu-item">
+			 <a :href="'tel:' + business_info.phone_number1" class="menu-item">
 				<div class="menu-icon-wrap">
 					<ion-icon :icon="callOutline" class="menu-icon" />
 				</div>
 				<span class="menu-label">{{t("Phone Number 2")}} <br/>
 					{{ business_info.phone_number1 }}
 				</span>
-			</div>
+			</a>
 		</div>
 
        <!-- Social Media Links -->
@@ -86,33 +87,7 @@
 			<span class="menu-label">Facebook</span>
 			<ion-icon :icon="chevronForward" class="arrow-icon" />
 		</div>
-
-
-		<!-- <div class="divider" />
-
-        <div class="menu-item" @click="navigate('support')">
-          <div class="menu-icon-wrap">
-            <ion-icon :icon="helpCircleOutline" class="menu-icon" />
-          </div>
-          <span class="menu-label">Contact Support</span>
-          <ion-icon :icon="chevronForward" class="arrow-icon" />
-        </div>
- <div class="divider" />
-        <div class="menu-item" @click="navigate('settings')">
-          <div class="menu-icon-wrap orange">
-            <ion-icon :icon="settingsOutline" class="menu-icon orange-icon" />
-          </div>
-          <span class="menu-label">Settings</span>
-          <ion-icon :icon="chevronForward" class="arrow-icon" />
-        </div> -->
       </div>
-
-      <!-- Logout Button -->
-      <!-- <div class="logout-card" @click="logout">
-        <ion-icon :icon="logOutOutline" class="logout-icon" />
-        <span class="logout-text">Logout</span>
-      </div> -->
-
     </ion-content>
   </ion-page>
 </template>

@@ -106,6 +106,7 @@ const messages = {
 	"Email":"អ៊ីមែល",
 	"PRODUCTS":"ផលិតផល",
 	"No products found":"មិនមានផលិតផលទេ",
+	"No products found.":"មិនមានផលិតផលទេ",
 	"Items Available":"ទំនិញដែលមាន",
 	"Price":"តម្លៃ",
 	"Installment Price":"តម្លៃបង់រំលោះ",
@@ -113,6 +114,13 @@ const messages = {
 	"Explore Now":"ស្វែងរកឥឡូវនេះ",
 	"Address":"អាស័យដ្ឋាន",
 	"Opening Hours":"ម៉ោងបើក",
+	"Cancel":"បោះបង់",
+	"Search...":"ស្វែងរក...",
+	"No results for":"មិនមានលទ្ធផលសម្រាប់",
+	"Type to search...":"វាយពាក្យដើម្បីស្វែងរក...",
+	"Product By Category":"ផលិតផលតាមប្រភេទ",
+	"Product By Tag":"ផលិតផលតាមស្លាក",
+	"Filter By Tags":"តម្រងតាមស្លាក"
   }
 }
 

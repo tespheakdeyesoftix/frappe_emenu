@@ -20,6 +20,7 @@
   "tik_tok",
   "address",
   "column_break_msan",
+  "choose_template",
   "business_hour",
   "show_hero_section",
   "hero_photo",
@@ -129,13 +130,19 @@
    "fieldname": "placeholder_image",
    "fieldtype": "Attach Image",
    "label": "Placeholder Image"
+  },
+  {
+   "fieldname": "choose_template",
+   "fieldtype": "Select",
+   "label": "Choose Template",
+   "options": "Default\nTemplate1"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-01 11:29:47.712563",
+ "modified": "2026-04-09 17:20:11.863317",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Business Information",

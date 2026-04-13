@@ -24,6 +24,10 @@
 
     <ion-content class="ion-padding">
 
+	<div class="pt-4 px-4">
+		<ComTag />
+	</div>
+
       <!-- Loading -->
       <div v-if="loading" class="flex justify-center py-12">
         <ion-spinner name="crescent" />
@@ -55,8 +59,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref,watch } from 'vue'
+import { useRouter,useRoute } from 'vue-router'
 import { Search } from 'lucide-vue-next'
 import {
   IonModal, IonHeader, IonToolbar, IonSearchbar,
@@ -64,9 +68,14 @@ import {
   IonItem, IonLabel, IonSpinner, IonThumbnail, IonNote
 } from '@ionic/vue'
 
+import ComTag from "@/views/home/component/ComTag.vue"
 import debounce from 'lodash/debounce'
 import ComProductCard from '@/components/ComProductCard.vue'
+const route = useRoute()
 
+watch(() => route.fullPath, () => {
+  emit('close')
+})
 
 defineProps({ isOpen: Boolean })
 const emit = defineEmits(['close'])
@@ -100,7 +109,7 @@ const fetchResults = debounce(async (val) => {
 	  filters: [['published', '=', 1]],
       limit: 20,
     })
-   
+
     results.value = res.data || []
   } catch (err) {
     // console.error('Search error:', err)

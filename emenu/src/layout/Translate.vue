@@ -6,6 +6,7 @@
         :src="locale === 'km' ? KhmerFlag : EnglishFlag"
         :alt="locale === 'km' ? 'Khmer' : 'English'"
         class="flag-img"
+		loading="lazy"
       />
       <!-- {{ locale === 'km' ? 'ភាសាខ្មែរ' : 'English' }} -->
 
@@ -16,14 +17,14 @@
     <div v-if="isOpen" class="lang-dropdown">
       <!-- English Option -->
       <div class="lang-option" :class="{ active: locale === 'en' }" @click="changeLang('en')">
-        <img :src="EnglishFlag" alt="English" class="flag-img" />
+        <img :src="EnglishFlag" alt="English" class="flag-img" loading="lazy"/>
         English
         <ion-icon v-if="locale === 'en'" :icon="checkmark" class="check" />
       </div>
 
       <!-- Khmer Option -->
       <div class="lang-option" :class="{ active: locale === 'km' }" @click="changeLang('km')">
-        <img :src="KhmerFlag" alt="Khmer" class="flag-img" />
+        <img :src="KhmerFlag" alt="Khmer" class="flag-img" loading="lazy" />
         ភាសាខ្មែរ
         <ion-icon v-if="locale === 'km'" :icon="checkmark" class="check" />
       </div>

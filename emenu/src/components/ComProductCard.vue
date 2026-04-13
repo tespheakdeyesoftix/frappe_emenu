@@ -1,7 +1,7 @@
 <template>
     <div class="h-full">
 		<div v-if="view === 'list'" class="relative flex gap-4 p-3 bg-white rounded-3xl shadow-sm border border-neutral-100 items-center">
-				<img :src="product.photo_1 || business_info.placeholder_image" :alt="product.product_name" class="w-24 h-24 rounded-2xl object-cover flex-shrink-0"/>
+				<img :src="product.photo_1 || business_info.placeholder_image" :alt="product.product_name" class="w-24 h-24 rounded-2xl object-cover flex-shrink-0" loading="lazy" />
 				<div class="flex-1 min-w-0">
 					<h5 class="font-bold text-neutral-800 truncate text-sm">{{ product.product_name }}</h5>
 					<p class="text-xs text-neutral-400 mb-2" v-if="product.category_name">{{ product.category_name }}</p>
@@ -19,7 +19,7 @@
         <!-- Grid View -->
         <div v-else class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden flex flex-col h-full">
           <div class="relative aspect-square overflow-hidden">
-            <img :src="product?.photo_1 || business_info.placeholder_image" :alt="product.product_name" class="w-full h-full object-cover"/>
+            <img :src="product?.photo_1 || business_info.placeholder_image" :alt="product.product_name" class="w-full h-full object-cover" loading="lazy" />
             <button @click.stop="toggleFavorite(product)" :class="['absolute top-3 right-3 p-2 rounded-full glass transition-colors', product.isFavorite ? 'text-red-500' : 'text-neutral-600']">
               <Heart size="18" :fill="isFavorite(product.name) ? 'red' : 'none'" />
             </button>

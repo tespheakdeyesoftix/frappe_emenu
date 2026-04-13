@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="true" ref="contentRef" :scroll-events="true" @ionScroll="onScroll">
 		<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
 			<ion-refresher-content />
 		</ion-refresher>
@@ -18,6 +18,7 @@
               :src="category.photo || business_info.placeholder_image"
               class="card-image"
               alt=""
+			  loading="lazy"
             />
             <div v-else class="card-image card-placeholder" />
             <div class="card-overlay" />
@@ -47,6 +48,7 @@
         />
       </ion-infinite-scroll>
     </ion-content>
+	<ComScrollToTop v-if="showScrollButton" @scrollToTop="scrollToTop" />
   </ion-page>
 </template>
 
@@ -64,21 +66,27 @@ import {
 import { arrowForward } from 'ionicons/icons'
 import { useRouter } from 'vue-router'
 import { useApp } from '@/hooks/useApp.js'
+import ComScrollToTop from "@/layout/ComScrollToTop.vue"
 
 const { business_info } = useApp()
-
 const router = useRouter()
 const page = ref(1)
 const pageSize = 10
 const hasMore = ref(true)
 const categories = ref([])
+const contentRef = ref(null)
+const showScrollButton = ref(false)
 
 async function getCategories(pageNumber = 1) {
   const res = await app.getDocList('Product Category', {
-    fields: ['name', 'category_name', 'photo', 'total_products'],
+    fields: ['name', 'category_name', 'photo', 'total_products','sort_order'],
 	filters: [['published', '=', 1]],
+	orderBy: {
+		field: 'sort_order',
+		order: 'asc'
+  	},
     limit: pageSize,
-    limit_start: (pageNumber - 1) * pageSize
+    limit_start: (pageNumber - 1) * pageSize,
   })
   const items = res.data || res.docs || []
   if (items.length) {
@@ -114,6 +122,16 @@ async function handleRefresh(event) {
   await getCategories(page.value);
   event.target.complete();
 }
+
+const onScroll = (event) => {
+		showScrollButton.value = event.detail.scrollTop > 100
+	}
+
+	const scrollToTop = async () => {
+		if (contentRef.value) {
+			await contentRef.value.$el.scrollToTop(500) // smooth scroll
+		}
+	}
 
 onMounted(() => {
   getCategories()

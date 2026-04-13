@@ -4,6 +4,8 @@ const favorites = ref([]) // array string of product
 const isInitialize = ref(false)
 const isInitializeFavorite = ref(false)
 
+const tag = ref([])
+
 export function useApp(){
     function addToFavorite(product_code){
         if(isFavorite(product_code)){
@@ -25,6 +27,29 @@ export function useApp(){
             business_info.value = res.data
         }
     }
+
+	async function getTag(){
+		const rest = await app.getApi("frappe.desk.reportview.get_sidebar_stats",{
+			stats:["_user_tags"],
+			doctype:"Products"
+		})
+		if(rest.data){
+			tag.value = rest.data.stats._user_tags.map(x => ({
+				name: x[0],
+				total: x[1],
+				color: getRandomColor()
+			}))
+		}
+	}
+
+	function getRandomColor(){
+		const color = "#" + Array.from(crypto.getRandomValues(new Uint8Array(3)))
+		.map(v => v.toString(16).padStart(2, "0"))
+		.join("");
+
+		return color;
+	}
+
     onMounted(async()=>{
         if (isInitialize.value) return;
         isInitialize.value = true
@@ -35,12 +60,20 @@ export function useApp(){
         // load busienss info
         await getBusinessInfo()
         // load favorite product
+
+		// get random color
+		getRandomColor()
+		//getTag
+		getTag()
+
+
     })
     return {
         business_info,
         favorites,
         addToFavorite,
         isFavorite,
-		isInitializeFavorite
+		isInitializeFavorite,
+		tag
     }
 }

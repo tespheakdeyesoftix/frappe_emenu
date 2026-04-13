@@ -4,7 +4,7 @@
 			<header class="px-4 pt-6 flex items-center justify-between">
 				<div class="flex items-center gap-3" >
 					<div class="w-15 h-15 flex items-center rounded-lg justify-center text-white shadow-lg shadow-accent/20">
-						 <img :src="business_info.photo" class="rounded-lg"  />
+						 <img :src="business_info.photo" class="rounded-lg" loading="lazy" />
 					</div>
 					<div>
 						<h2 class="font-bold text-xl tracking-tight" style="margin: 0;">{{business_info.business_name}}</h2>
@@ -25,7 +25,7 @@
 					:src="business_info.hero_photo"
 					alt="Hero"
 					class="absolute inset-0 w-full h-full object-cover opacity-50"
-
+					loading="lazy"
 				/>
 				<img
 					v-else

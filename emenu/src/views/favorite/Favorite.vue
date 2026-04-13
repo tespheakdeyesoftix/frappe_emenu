@@ -1,6 +1,6 @@
 <template>
 <ion-page>
-    <ion-content>
+    <ion-content ref="contentRef" :scroll-events="true" @ionScroll="onScroll">
 		<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
 			<ion-refresher-content />
 		</ion-refresher>
@@ -29,32 +29,34 @@
 				</div>
 			</div>
 
-				<div :class="['grid gap-4', viewMode === 'grid' ? 'grid-cols-2' : 'grid-cols-1']">
-					  <div
-						v-for="product in data.filter((r) => favorites.includes(r.name))" :key="product.name"
-						class="relative cursor-pointer"
-						@click="handleProductClick(product)"
-					  >
-					  <ComProductCard :product="product" :view="viewMode"/>
-					  </div>
+			<div :class="['grid gap-4', viewMode === 'grid' ? 'grid-cols-2' : 'grid-cols-1']">
+				<div
+					v-for="product in data.filter((r) => favorites.includes(r.name))" :key="product.name"
+					class="relative cursor-pointer"
+					@click="handleProductClick(product)"
+					>
+					<ComProductCard :product="product" :view="viewMode"/>
 				</div>
 			</div>
+			</div>
 
-			<div v-else class="text-center py-16 text-neutral-400">
-				<p class="text-sm">No products found.</p>
+			<div v-else class="flex flex-col items-center justify-center py-16 text-neutral-400">
+				<ShoppingCart size="40" />
+				<p class="text-sm mt-3">{{t("No products found.")}}</p>
 			</div>
 		</div>
     </ion-content>
+	<ComScrollToTop v-if="showScrollButton" @scrollToTop="scrollToTop" />
 </ion-page>
 </template>
     <script setup>
     import {ref} from "vue"
-	import { Heart, Grid, List, Plus ,Table, Menu} from "lucide-vue-next"
+	import { Heart, Grid, List, Plus ,Table, Menu, ShoppingCart} from "lucide-vue-next"
     import { IonContent,IonPage,onIonViewDidEnter,IonRefresher,IonRefresherContent } from '@ionic/vue';
     import { useApp } from '@/hooks/useApp';
 	import { useRouter } from 'vue-router';
 	import ComProductCard from "@/components/ComProductCard.vue"
-
+	import ComScrollToTop from "@/layout/ComScrollToTop.vue"
 	import { useViewMode } from "@/hooks/useViewMode.js"
 	const { viewMode, setViewMode } = useViewMode()
 
@@ -62,6 +64,9 @@
     const data = ref([])
 	// const viewMode = ref("grid")
 	const router = useRouter()
+
+	const contentRef = ref(null)
+	const showScrollButton = ref(false)
 
 onIonViewDidEnter(async () => {
 	if(!isInitializeFavorite.value){
@@ -78,6 +83,10 @@ async function loadFavorites(reset = false) {
     const res = await app.getDocList("Products", {
         fields: ["name", "product_name", "price", "photo_1","published"],
         filters: [["name", "in", favorites.value], ["published", "=", 1]],
+		orderBy: {
+			field: 'sort_order',
+			order: 'asc'
+		},
     })
     if (res.data) {
         data.value = res.data
@@ -101,4 +110,14 @@ function toggleFavorite(product) {
 function handleProductClick(product) {
   router.push(`/product-detail/${product.name}`)
 }
+
+const onScroll = (event) => {
+		showScrollButton.value = event.detail.scrollTop > 100
+	}
+
+	const scrollToTop = async () => {
+		if (contentRef.value) {
+			await contentRef.value.$el.scrollToTop(500) // smooth scroll
+		}
+	}
 </script>

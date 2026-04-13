@@ -37,8 +37,9 @@
     </div>
 
     <!-- Empty State -->
-    <div v-if="products.length === 0" class="text-center py-16 text-neutral-400">
-      <p class="text-sm">{{ t("No products found") }}</p>
+    <div v-if="products.length === 0" class="text-center py-16 text-neutral-400 flex flex-col items-center">
+		<ShoppingCart size="40" />
+      <p class="text-sm mt-3">{{ t("No products found") }}</p>
     </div>
 
 	 <!-- ✅ Infinite Scroll -->
@@ -57,7 +58,7 @@
 
 <script setup>
 import { ref } from "vue"
-import { Heart, Grid, List, Plus} from "lucide-vue-next"
+import { Heart, Grid, List, Plus,ShoppingCart} from "lucide-vue-next"
 import { IonInfiniteScroll, IonInfiniteScrollContent } from "@ionic/vue"
 import ComProductCard from "@/components/ComProductCard.vue"
 import { useRouter } from "vue-router"
@@ -70,8 +71,6 @@ const {
 } = useApp()
 const router = useRouter()
 // const viewMode = ref("grid")
-
-
 
 const props = defineProps({
   products: { type: Array, default: () => [] },

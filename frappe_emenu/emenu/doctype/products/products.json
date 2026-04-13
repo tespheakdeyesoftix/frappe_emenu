@@ -15,6 +15,7 @@
   "is_feature",
   "published",
   "column_break_fxus",
+  "sort_order",
   "photo",
   "photo_1",
   "photo_2",
@@ -126,13 +127,18 @@
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Installment Price"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-02 10:19:17.525866",
+ "modified": "2026-04-09 11:38:57.319135",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Products",

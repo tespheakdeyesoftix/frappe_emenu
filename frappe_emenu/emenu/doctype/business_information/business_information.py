@@ -17,6 +17,7 @@ class BusinessInformation(Document):
 		address: DF.SmallText | None
 		business_hour: DF.Data | None
 		business_name: DF.Data | None
+		choose_template: DF.Literal["Default", "Template1"]
 		contact_name: DF.Data | None
 		facebook: DF.Data | None
 		hero_intro: DF.SmallText | None

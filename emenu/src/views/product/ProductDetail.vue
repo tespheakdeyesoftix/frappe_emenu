@@ -24,9 +24,11 @@
         <h2 class="text-xl font-bold text-gray-900 leading-snug flex-1">
           {{ productDetail?.product_name }}
         </h2>
-        <span class="category-badge">
-          {{ productDetail?.category_name }}
-        </span>
+		<router-link :to="`/category-product/${productDetail?.category}`">
+			<span class="category-badge">
+			{{ productDetail?.category_name }}
+			</span>
+		</router-link>
       </div>
 
 	  <div class="flex justify-between ">
@@ -46,8 +48,10 @@
 
 		<div class="flex gap-2 flex-wrap py-3" v-if="productDetail?._user_tags">
 			<ion-chip
+			 	color="tertiary"
 				v-for="tag in (productDetail?._user_tags || '').split(',')"
 				:key="tag"
+				@click="gotoTag(tag)"
 			>
 			<ion-label class="p-2">{{ tag }}</ion-label>
 			</ion-chip>
@@ -97,8 +101,12 @@ const {business_info,isFavorite,addToFavorite} =useApp()
 
 async function getProductDetail() {
   const res = await app.getDocList("Products", {
-    fields: ["name", "product_name",'published',"price","installment_price", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
+    fields: ["name", "product_name",'published',"price","installment_price","category", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
     filters: [["name", "=", route.params.name],["published", "=", 1]],
+	orderBy: {
+		field: 'sort_order',
+		order: 'asc'
+  	},
   });
   if (res.data) {
     productDetail.value = res.data[0];
@@ -121,6 +129,10 @@ function toggleFavorite(productDetail) {
 onMounted(() => {
   getProductDetail();
 });
+
+function gotoTag(name) {
+  router.push(`/tag/${name}`);
+}
 </script>
 
 <style scoped>
@@ -195,32 +207,6 @@ onMounted(() => {
   border-radius: 999px;
   white-space: nowrap;
   flex-shrink: 0;
-}
-
-/* Tag pills */
-.tag-pill {
-  font-size: 12px;
-  color: #374151;
-  border: 1px solid #e5e7eb;
-  border-radius: 999px;
-  padding: 3px 12px;
-}
-
-/* Order Now */
-.order-btn {
-  width: 100%;
-  background: #f97316;
-  color: white;
-  padding: 14px;
-  border-radius: 14px;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  transition: background 0.2s;
-}
-
-.order-btn:active {
-  background: #ea6c0a;
 }
 
 /* Contact buttons */

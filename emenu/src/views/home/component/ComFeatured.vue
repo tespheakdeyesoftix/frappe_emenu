@@ -30,7 +30,7 @@
     >
       <swiper-slide v-for="product in products" :key="product?.name">
         <div class="slide-card" @click="gotoDetail(product)">
-          <img :src="product?.photo_1 || business_info.placeholder_image" :alt="product?.product_name" />
+          <img :src="product?.photo_1 || business_info.placeholder_image" :alt="product?.product_name" loading="lazy" />
           <div class="slide-info">
             <h3>{{ product?.product_name }}</h3>
             <p>${{ product?.price }}</p>
@@ -69,6 +69,10 @@ export default {
       const res = await app.getDocList("Products", {
         fields: ["name", "product_name", "price", "photo_1"],
         filters: [["is_feature", "=", 1], ["published", "=", 1]],
+		orderBy: {
+			field: 'sort_order',
+			order: 'asc'
+		},
 		limit: 100
       })
       products.value = res.data

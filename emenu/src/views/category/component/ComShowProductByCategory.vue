@@ -1,6 +1,6 @@
 <template>
 	<ion-page>
-		<ion-content>
+		<ion-content ref="contentRef" :scroll-events="true" @ionScroll="onScroll">
 			<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
 				<ion-refresher-content />
 			</ion-refresher>
@@ -10,6 +10,7 @@
 						class="hero-img"
 						:src="category?.photo  || business_info.placeholder_image"
 						:alt="category?.category_name"
+						loading="lazy"
 					/>
 					<div class="hero-gradient"></div>
 					<div class="hero-back" @click="router.back()">
@@ -75,34 +76,34 @@
 				</div>
 			</div>
 		</ion-content>
+		<ComScrollToTop v-if="showScrollButton" @scrollToTop="scrollToTop" />
 	</ion-page>
 </template>
 
 <script setup>
-import { IonPage, IonContent, IonIcon,IonInfiniteScroll, IonInfiniteScrollContent,IonRefresher,
-  IonRefresherContent } from '@ionic/vue';
+import { IonPage, IonContent, IonIcon,IonInfiniteScroll, IonInfiniteScrollContent,IonRefresher,IonRefresherContent } from '@ionic/vue';
 import { ref, onMounted, computed } from 'vue';
 import { chevronBackOutline } from 'ionicons/icons';
 import { useRoute, useRouter } from 'vue-router';
 import { Heart, Plus,Grid,Menu,Table, List,PackageX, SearchX, XCircle, LayoutGrid } from 'lucide-vue-next'
 import ComProductCard from "@/components/ComProductCard.vue"
 import { useViewMode } from "@/hooks/useViewMode.js"
-const { viewMode, setViewMode } = useViewMode()
-
+import ComScrollToTop from "@/layout/ComScrollToTop.vue"
 import { useApp } from '@/hooks/useApp.js'
-const { business_info} = useApp()
 
+const { viewMode, setViewMode } = useViewMode()
+const { business_info} = useApp()
 const route = useRoute();
 const router = useRouter();
 const categoryName = route.params.name;
 const categories = ref([]);
 const product = ref([]);
 const category = computed(() => categories.value[0]);
-// const viewMode = ref("grid")
-
 const page = ref(1)
 const pageSize = 10
 const hasMore = ref(true)
+const contentRef = ref(null)
+const showScrollButton = ref(false)
 
 function handleProductClick(product) {
 	router.push({
@@ -122,6 +123,10 @@ async function getProducts(reset = false) {
   const res = await app.getDocList('Products', {
     fields: ['name', 'product_name', 'price', 'photo_1'],
     filters: [['category', '=', categoryName], ['published', '=', 1]],
+	orderBy: {
+		field: 'sort_order',
+		order: 'asc'
+  	},
     limit: pageSize,
     limit_start: (page.value - 1) * pageSize,
   });
@@ -145,14 +150,14 @@ async function getProducts(reset = false) {
 async function loadMore(event) {
   page.value++
   await getProducts()
-  event.target.complete()  // ✅ stop the spinner
+  event.target.complete()
 }
 
 async function handleRefresh(event) {
   page.value = 1;
   hasMore.value = true;
-  product.value = [];        // clear old data
-  await getProducts(true);   // pass boolean true
+  product.value = [];
+  await getProducts(true);
   event.target.complete();
 }
 
@@ -164,6 +169,16 @@ function formatPrice(price) {
 function toggleFavorite(product) {
   product.isFavorite = !product.isFavorite
 }
+
+const onScroll = (event) => {
+		showScrollButton.value = event.detail.scrollTop > 100
+	}
+
+	const scrollToTop = async () => {
+		if (contentRef.value) {
+			await contentRef.value.$el.scrollToTop(500)
+		}
+	}
 
 onMounted(() => {
   getCategories();

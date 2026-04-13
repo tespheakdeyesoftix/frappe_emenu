@@ -11,6 +11,7 @@
   "description",
   "column_break_xgum",
   "total_products",
+  "sort_order",
   "published"
  ],
  "fields": [
@@ -51,13 +52,18 @@
    "fieldtype": "Link",
    "label": "Business Name",
    "options": "Business Information"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order"
   }
  ],
  "grid_page_length": 50,
  "image_field": "photo",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-02 10:19:30.999083",
+ "modified": "2026-04-09 11:38:27.357012",
  "modified_by": "Administrator",
  "module": "eMenu",
  "name": "Product Category",

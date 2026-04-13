@@ -19,7 +19,9 @@ class ProductCategory(Document):
 		description: DF.TextEditor | None
 		photo: DF.AttachImage | None
 		published: DF.Check
+		sort_order: DF.Int
 		total_products: DF.Int
 	# end: auto-generated types
 
-	pass
+	
+	

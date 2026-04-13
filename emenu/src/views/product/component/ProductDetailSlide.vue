@@ -19,13 +19,12 @@
 >
   <swiper-slide v-for="(img, index) in images" :key="index">
     <div class="slide-card">
-      <img :src="img || business_info.placeholder_image" :alt="productDetail.product_name" />
+      <img :src="img || business_info.placeholder_image" :alt="productDetail.product_name" loading="lazy" />
     </div>
 
   </swiper-slide>
   	
 </swiper>
-<!-- {{ business_info.placeholder_image }} -->
   </div>
 </template>
 
@@ -45,16 +44,6 @@ export default {
   	},
   setup(props) {
 	const { business_info} = useApp()
-	// const images = computed(() => {
-    //   return [
-    //     props.productDetail?.photo,
-    //     props.productDetail?.photo_1,
-    //     props.productDetail?.photo_2,
-    //     props.productDetail?.photo_3,
-    //     props.productDetail?.photo_4,
-    //     props.productDetail?.photo_5
-    //   ].filter(Boolean) // remove null/undefined
-    // })
 	const images = computed(() => {
   const photos = [
     props.productDetail?.photo,
@@ -82,14 +71,6 @@ export default {
   width: 100%;
 
 }
-
-/* .slide-card {
-  position: relative;
-  width: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-  height: 220px;
-} */
 
 /* Tablet */
 @media (min-width: 640px) {
@@ -119,12 +100,12 @@ export default {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.70) 0%,
     rgba(0, 0, 0, 0.25) 45%,
     transparent 75%
-  );
+  ); */
   border-radius: 16px;
 }
 
@@ -207,13 +188,13 @@ export default {
 .slide-card {
   position: relative;
   width: 100%;
-  border-radius: 0;   /* ← was 16px */
+  border-radius: 0;
   overflow: hidden;
   height: 360px;
 }
 
 /* Also remove border-radius from the ::after overlay */
 .slide-card::after {
-  border-radius: 0;   /* ← was 16px */
+  border-radius: 0;
 }
 </style>
