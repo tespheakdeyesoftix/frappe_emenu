@@ -1,6 +1,18 @@
 import frappe
+from frappe.desk.reportview import get_sidebar_stats
+import time
 
-@frappe.whitelist()
+
+@frappe.whitelist(allow_guest=True)
+def get_tag_state():
+    return get_sidebar_stats(
+        stats=["_user_tags"],
+        doctype="Products",
+        filters={},
+        _=int(time.time() * 1000)
+    )
+    
+@frappe.whitelist(allow_guest=True)
 def get_product_by_category():
     category = frappe.db.sql("""
         SELECT
@@ -32,3 +44,14 @@ def get_product_by_category():
         """, cat["name"], as_dict=1)
 
     return category
+
+@frappe.whitelist(allow_guest=True)
+def get_tag_state():
+    import time
+    return get_sidebar_stats(
+       stats='["_user_tags"]',
+        doctype="Products",
+        filters=[],
+        _=int(time.time() * 1000)
+    )
+ 

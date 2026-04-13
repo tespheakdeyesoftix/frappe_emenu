@@ -29,10 +29,7 @@ export function useApp(){
     }
 
 	async function getTag(){
-		const rest = await app.getApi("frappe.desk.reportview.get_sidebar_stats",{
-			stats:["_user_tags"],
-			doctype:"Products"
-		})
+		const rest = await app.getApi("frappe_emenu.api.get_tag_state")
 		if(rest.data){
 			tag.value = rest.data.stats._user_tags.map(x => ({
 				name: x[0],
