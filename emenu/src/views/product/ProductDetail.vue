@@ -1,11 +1,16 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-		<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
-			<ion-refresher-content />
-		</ion-refresher>
+	<ComLoading v-if="loading  || !productDetail?.product_name"/>
+	<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
+		<ion-refresher-content />
+	</ion-refresher>
     <div class="relative" style="height: 360px;">
-      <ProductDetailSlide :productDetail="productDetail" />
+     	<ProductDetailSlide
+			v-if="productDetail?.name"
+			:productDetail="productDetail"
+			@images-loaded="loading = false"
+		/>
       <div class="hero-back" @click="router.back()">
         <ion-icon :icon="chevronBackOutline" />
       </div>
@@ -20,18 +25,18 @@
     </div>
 
     <div class="detail-card">
-      <div class="flex justify-between items-center gap-3">
-        <h2 class="text-xl font-bold text-gray-900 leading-snug flex-1">
-          {{ productDetail?.product_name }}
-        </h2>
-		<router-link :to="`/category-product/${productDetail?.category}`">
-			<span class="category-badge">
-			{{ productDetail?.category_name }}
-			</span>
-		</router-link>
-      </div>
+		<div class="flex justify-between items-center gap-3">
+			<h2 class="text-xl font-bold text-gray-900 leading-snug flex-1">
+				{{ productDetail?.product_name }}
+			</h2>
+			<router-link :to="`/category-product/${productDetail?.category}`">
+				<span class="category-badge">
+					{{ productDetail?.category_name }}
+				</span>
+			</router-link>
+		</div>
 
-	  <div class="flex justify-between ">
+		<div class="flex justify-between ">
 			<div v-if="productDetail?.price">
 				<p>{{ t("Price") }}</p>
 				<div class="text-2xl font-bold text-orange-500">
@@ -44,7 +49,7 @@
 					{{ formatPrice(productDetail?.installment_price) }}
 				</div>
 			</div>
-	  </div>
+		</div>
 
 		<div class="flex gap-2 flex-wrap py-3" v-if="productDetail?._user_tags">
 			<ion-chip
@@ -53,28 +58,28 @@
 				:key="tag"
 				@click="gotoTag(tag)"
 			>
-			<ion-label class="p-2">{{ tag }}</ion-label>
+				<ion-label class="p-2">{{ tag }}</ion-label>
 			</ion-chip>
 		</div>
-      <div v-if="productDetail?.description">
-        <h4 class="text-base font-semibold text-gray-900 pt-2" style="margin: 0;">{{ t("Description") }}</h4>
-        <p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail?.description"></p>
-      </div>
+		<div v-if="productDetail?.description">
+			<h4 class="text-base font-semibold text-gray-900 pt-2" style="margin: 0;">{{ t("Description") }}</h4>
+			<p class="text-gray-500 text-sm leading-relaxed" v-html="productDetail?.description"></p>
+		</div>
 
-     <div class="flex gap-3 mt-8 w-full">
-    <a v-if="business_info.telegram" :href="business_info?.telegram" target="_blank" class="flex-1">
-        <button class="contact-btn telegram w-full">
-            <ion-icon :icon="paperPlaneOutline" />
-            {{ t("Contact Telegram") }}
-        </button>
-    </a>
-    <a v-if="business_info.facebook" :href="business_info?.facebook" target="_blank" class="flex-1">
-        <button class="contact-btn facebook w-full">
-            <ion-icon :icon="logoFacebook" />
-            Facebook
-        </button>
-    </a>
-</div>
+		<div class="flex gap-3 mt-8 w-full">
+			<a v-if="business_info.telegram" :href="business_info?.telegram" target="_blank" class="flex-1">
+				<button class="contact-btn telegram w-full">
+					<ion-icon :icon="paperPlaneOutline" />
+					{{ t("Contact Telegram") }}
+				</button>
+			</a>
+			<a v-if="business_info.facebook" :href="business_info?.facebook" target="_blank" class="flex-1">
+				<button class="contact-btn facebook w-full">
+					<ion-icon :icon="logoFacebook" />
+					Facebook
+				</button>
+			</a>
+		</div>
     </div>
   </ion-content>
 </ion-page>
@@ -99,23 +104,41 @@ const router = useRouter();
 const productDetail = ref({});
 const {business_info,isFavorite,addToFavorite} =useApp()
 
+import ComLoading from "@/layout/ComLoading.vue";
+
+const loading = ref(true)
+
 async function getProductDetail() {
-  const res = await app.getDocList("Products", {
-    fields: ["name", "product_name",'published',"price","installment_price","category", "category_name","_user_tags", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
-    filters: [["name", "=", route.params.name],["published", "=", 1]],
-	orderBy: {
-		field: 'sort_order',
-		order: 'asc'
-  	},
-  });
-  if (res.data) {
-    productDetail.value = res.data[0];
+  loading.value = true
+
+  try {
+    const res = await app.getDocList("Products", {
+      fields: ["name", "product_name", "published", "price", "installment_price", "category", "category_name", "_user_tags", "photo", "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "description"],
+      filters: [["name", "=", route.params.name], ["published", "=", 1]],
+      orderBy: {
+        field: 'sort_order',
+        order: 'asc'
+      },
+    })
+
+    if (res.data) {
+      productDetail.value = res.data[0]
+    }
+	setTimeout(() => {
+      loading.value = false
+    }, 1000)
+
+  } catch (error) {
+    loading.value = false
   }
 }
 
 async function handleRefresh(event) {
-  await getProductDetail(true);
-  event.target.complete();
+  try {
+    await getProductDetail()
+  } finally {
+    event.target.complete()
+  }
 }
 function formatPrice(price) {
   if (!price) return "$0"

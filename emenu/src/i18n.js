@@ -120,7 +120,8 @@ const messages = {
 	"Type to search...":"វាយពាក្យដើម្បីស្វែងរក...",
 	"Product By Category":"ផលិតផលតាមប្រភេទ",
 	"Product By Tag":"ផលិតផលតាមស្លាក",
-	"Filter By Tags":"តម្រងតាមស្លាក"
+	"Filter By Tags":"តម្រងតាមស្លាក",
+	"Loading, please wait...":"កំពុងផ្ទុក សូមរង់ចាំ...",
   }
 }
 

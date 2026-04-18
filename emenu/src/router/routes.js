@@ -7,6 +7,8 @@ import ComShowProductByCategory from '@/views/category/component/ComShowProductB
 import ProductDetail from "@/views/product/ProductDetail.vue";
 import ComPageTag from "@/views/home/component/ComPageTag.vue"
 
+import ComLoading from "@/layout/ComLoading.vue"
+
 const routes = [
   {
     path: '/',
@@ -40,6 +42,11 @@ const routes = [
         // path: 'tag/:name',
         path: 'tag/:name',
         component: ComPageTag,
+      },
+      {
+        // path: 'tag/:name',
+        path: 'loading',
+        component: ComLoading,
       },
     ],
   },
