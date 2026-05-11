@@ -1,7 +1,7 @@
 <template>
 <ion-page>
   <ion-content :fullscreen="true">
-	<ComLoading v-if="loading  || !productDetail?.product_name"/>
+	<!-- <ComLoading v-if="loading  || !productDetail?.product_name"/> -->
 	<ion-refresher slot="fixed" @ionRefresh="handleRefresh">
 		<ion-refresher-content />
 	</ion-refresher>
@@ -106,10 +106,10 @@ const {business_info,isFavorite,addToFavorite} =useApp()
 
 import ComLoading from "@/layout/ComLoading.vue";
 
-const loading = ref(true)
+// const loading = ref(true)
 
 async function getProductDetail() {
-  loading.value = true
+//   loading.value = true
 
   try {
     const res = await app.getDocList("Products", {
@@ -124,12 +124,12 @@ async function getProductDetail() {
     if (res.data) {
       productDetail.value = res.data[0]
     }
-	setTimeout(() => {
-      loading.value = false
-    }, 1000)
+	// setTimeout(() => {
+    //   loading.value = false
+    // }, 500)
 
   } catch (error) {
-    loading.value = false
+    // loading.value = false
   }
 }
 
